@@ -1,0 +1,9 @@
+.default-page-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.default-page-container-content {
+    width: 1030px;
+}

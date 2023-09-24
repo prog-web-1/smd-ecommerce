@@ -1,0 +1,23 @@
+.product-carousel-component {
+    width: 100%;
+}
+
+.product-carousel-component .carousel-status {
+    display: none;
+}
+
+.product-carousel-component .carousel .control-next.control-arrow:before {
+    border-left-color: #000000;
+}
+
+.product-carousel-component .carousel .control-prev.control-arrow:before {
+    border-right-color: #000000;
+}
+
+.product-carousel-component .control-dots {
+    display: none;
+}
+
+.product-carousel-component .axis-vertical {
+    display: none;
+}
