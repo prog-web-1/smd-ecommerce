@@ -186,7 +186,7 @@ function _generateTextInput(props: IFormGroupProps) {
             id={props.id} 
             disabled={props.disabled}
             placeholder={props.placeholder} 
-            type={props.type} 
+            type={props.type}
         />
     )
 }

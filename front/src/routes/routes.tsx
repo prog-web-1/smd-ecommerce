@@ -8,6 +8,11 @@ import {
     Route,
 } from "react-router-dom";
 import SearchProducts from "../pages/SearchProducts/SearchProducts";
+import AdminLayout from "../components/AdminLayout/AdminLayout";
+import AdminCategories from "../pages/AdminCategories/AdminCategories";
+import AdminProducts from "../pages/AdminProducts/AdminProducts";
+import AdminPurchases from "../pages/AdminPurchases/AdminPurchases";
+import AdminReports from "../pages/AdminReports/AdminReports";
 
 function Router() {
     return (
@@ -19,6 +24,10 @@ function Router() {
                 <Route path="shopping_history" element={<ShoppingHistory/>}/>
                 <Route path="shopping_cart" element={<ShoppingCart/>}/>
                 <Route path="search_products" element={<SearchProducts/>}/>
+                <Route path="admin/categories" element={<AdminLayout><AdminCategories/></AdminLayout>}/>
+                <Route path="admin/products" element={<AdminLayout><AdminProducts/></AdminLayout>}/>
+                <Route path="admin/purchases" element={<AdminLayout><AdminPurchases/></AdminLayout>}/>
+                <Route path="admin/reports" element={<AdminLayout><AdminReports/></AdminLayout>}/>
             </Routes>
         </BrowserRouter>
     )

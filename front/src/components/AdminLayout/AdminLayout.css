@@ -1,0 +1,12 @@
+.admin-layout-body {
+    height: 100%;
+    width: 100%; 
+    display: flex;
+}
+
+.admin-layout-content {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}

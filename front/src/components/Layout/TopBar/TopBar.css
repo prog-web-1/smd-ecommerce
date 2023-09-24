@@ -2,7 +2,16 @@
     justify-content: center;
     display: flex;
     padding: 10px;
-    align-items: center;
+}
+
+.top-bar-container {
+    width: 1010px;
+    display: flex;
+}
+
+.top-bar-container-admin {
+    width: 100%;
+    display: flex;
 }
 
 .top-bar-logo {
