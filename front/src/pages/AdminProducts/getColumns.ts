@@ -27,7 +27,7 @@ export function getColumns() {
         {
             type: "string",
             label: "Preço",
-            control: "price",
+            control: "showPrice",
             orderControl: "price",
         },
         {

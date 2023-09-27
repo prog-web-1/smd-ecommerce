@@ -2,17 +2,17 @@ import Home from "../pages/Home/Home";
 import Product from "../pages/Product/Product";
 import ShoppingHistory from "../pages/ShoppingHistory/ShoppingHistory";
 import ShoppingCart from "../pages/ShoppingCart/ShoppingCart";
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-} from "react-router-dom";
 import SearchProducts from "../pages/SearchProducts/SearchProducts";
 import AdminLayout from "../components/AdminLayout/AdminLayout";
 import AdminCategories from "../pages/AdminCategories/AdminCategories";
 import AdminProducts from "../pages/AdminProducts/AdminProducts";
 import AdminPurchases from "../pages/AdminPurchases/AdminPurchases";
 import AdminReports from "../pages/AdminReports/AdminReports";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
 
 function Router() {
     return (

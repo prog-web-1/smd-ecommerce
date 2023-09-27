@@ -20,7 +20,7 @@ export function ModalsProvider() {
 
     openSaveModal = (targetEntity?: Record<string, unknown>)=>{ 
         if(targetEntity){
-            if(targetEntity._id) {
+            if(targetEntity.id) {
                 setIsEdit(true);
             } 
             setTargetEntity({...targetEntity}); 

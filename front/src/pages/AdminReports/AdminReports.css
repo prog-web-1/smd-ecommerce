@@ -1,0 +1,48 @@
+.admin-reports-data-box {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #6A5ACD;
+    width: 50%;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-reports-data-box:first-child {
+    margin-right: 20px;
+}
+
+.admin-reports-chart-area {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.admin-reports-data-box-title {
+    color: #6A5ACD;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.admin-reports-data-box-body {
+    display: flex;
+    flex-grow: 1;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+.admin-reports-client-card {
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: white;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.admin-reports-data-box-chart {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #6A5ACD;
+    width: 100%;
+}

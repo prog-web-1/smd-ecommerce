@@ -20,6 +20,7 @@
     color: #6A5ACD;
     cursor: pointer;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .top-bar-filter-button {

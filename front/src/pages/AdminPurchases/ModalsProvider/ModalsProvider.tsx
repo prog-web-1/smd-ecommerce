@@ -8,7 +8,6 @@ export function ModalsProvider() {
     const [targetEntity, setTargetEntity] = useState<Record<string, unknown>>({});
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-
     openDeleteModal = (targetEntity: Record<string, unknown>)=>{ 
         setTargetEntity({...targetEntity}); 
         setIsOpenDeleteModal(true);

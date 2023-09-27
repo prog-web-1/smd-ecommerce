@@ -6,7 +6,7 @@ import { ModalsProvider, openSaveModal } from "./ModalsProvider/ModalsProvider";
 export let updateEntities: ()=>void;
 
 export default function AdminProducts() {
-    const [entities, setEntities] = useState<Record<string, unknown>[]>([{id: "1", name: "Sapato 1", price: "R$ 10,00", stock: "5"}]);
+    const [entities, setEntities] = useState<Record<string, unknown>[]>([{id: "1", name: "Sapato 1", description: "Descrição", showPrice: "R$ 10,00", stock: 5, price: 10.00}]);
     const [total, setTotal] = useState(1);
     const [offset, setOffset] = useState(0);
     const [filters, setFilters] = useState<Record<string, unknown>>({

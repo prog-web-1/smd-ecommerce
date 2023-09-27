@@ -22,7 +22,7 @@ const data = [
         description: "Um sapato muito bonito",
         count: 3,
         price: 15.20,
-        image: "https://www.louie.com.br/loja/image/cache/data/colecao-2019/viccini/OLIVE/OLIVE%20V%201-550x550.jpg"
+        image: "https://media.istockphoto.com/id/685779142/pt/foto/red-tshirt-clothes.jpg?s=1024x1024&w=is&k=20&c=ucA-J_IS2avss1xgGo7Ms_CFRQE6Aw0T0jkQPaSVmrs="
     },
     {
         id: "2",
