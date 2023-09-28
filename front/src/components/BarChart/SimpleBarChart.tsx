@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps, LabelList } from 'recharts';
 import { useEffect, useState } from "react";
 import "./SimpleBarChart.css";
 
@@ -38,13 +38,13 @@ export function SimpleBarChart(props: ISimpleBarChartProps) {
     }, [])
 
     return (
-        <div id={props.id} style={{width: "100%", height: "100%"}}>
+        <div id={props.id} style={{width: "100%", overflowX: "auto", overflowY: "hidden"}}>
             <BarChart
-                width={width}
+                width={values.length*80 > width ? values.length*80 : width}
                 height={300}
                 data={values}
                 margin={{
-                    top: 5,
+                    top: 28,
                     right: 30,
                     left: 20,
                     bottom: 5,
@@ -54,10 +54,22 @@ export function SimpleBarChart(props: ISimpleBarChartProps) {
                 <XAxis dataKey={props.dataKey} />
                 <YAxis />
                 <Tooltip content={<CustomTooltip />} />
+                
                 {
                     bars.map(bar=>{
                         return (
-                            <Bar dataKey={bar.name} fill={bar.color} />
+                            <Bar dataKey={bar.name} fill={bar.color}  barSize={40} >
+                                <LabelList
+                                    dataKey={bar.name}
+                                    position={"top"}
+                                    fill="black"
+                                    style={{ fontSize: '12px', fontWeight: 'bolder' }}
+                                    angle={360}
+                                    formatter={(e: number)=>{
+                                        return(`R$ ${e.toFixed(2)}`)
+                                    }}
+                                />
+                            </Bar>
                         )
                     })
                 }
