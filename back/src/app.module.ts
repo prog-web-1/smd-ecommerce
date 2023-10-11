@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './models/user.entity';
-import { UsersService } from './services/users.service';
-import { UsersModule } from './modules/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
+import { IsUniqueConstraint } from './validators/unique';
 
 @Module({
   imports: [
@@ -18,7 +18,10 @@ import { ConfigModule } from '@nestjs/config';
       entities: [User],
       synchronize: true,
     }),
-    UsersModule,
+    UserModule,
   ],
+  providers: [
+    IsUniqueConstraint
+  ]
 })
 export class AppModule {}
