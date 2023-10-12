@@ -61,7 +61,7 @@ export class AuthController {
   @Get('/me')
   @ApiHeader({name: 'Authorization', description: 'Bearer token'})
   getMe(@CurrentUser() currentUser: User) {
-    return this.userService.findOneBy({id: currentUser.id});
+    return this.userService.findOne(currentUser.id)
   }
 
   @Patch('/me')

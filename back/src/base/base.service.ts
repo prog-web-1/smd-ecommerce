@@ -38,6 +38,5 @@ export class BaseService<T, CreateDto extends DeepPartial<T>, UpdateDto extends 
     if (result.affected === 0) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND)
     }
-    return result
   }
 }
