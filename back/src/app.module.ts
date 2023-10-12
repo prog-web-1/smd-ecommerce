@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { User } from './user/entities/user.entity';
 import { IsUniqueConstraint } from './validators/unique';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { IsExistsConstraint } from './validators/exists';
 
 @Module({
   imports: [
@@ -26,9 +27,11 @@ import { CategoryModule } from './category/category.module';
     UserModule,
     AuthModule,
     CategoryModule,
+    ProductModule,
   ],
   providers: [
     IsUniqueConstraint,
+    IsExistsConstraint,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
