@@ -33,6 +33,7 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.senha) updateUserDto.senha = bcrypt.hashSync(updateUserDto.senha, 10)
     return this.userRepository.update(id, updateUserDto)
   }
 

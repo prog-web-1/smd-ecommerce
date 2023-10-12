@@ -1,4 +1,4 @@
-import { IsString, IsEmail, MinLength } from "class-validator";
+import { IsString, IsEmail, MinLength, IsBoolean } from "class-validator";
 import { isUnique } from "../../validators/unique";
 
 export class CreateUserDto {
@@ -13,4 +13,6 @@ export class CreateUserDto {
     endereco: string;
     @IsEmail()
     email: string;
+    @IsBoolean()
+    administrador: boolean = false;
 }

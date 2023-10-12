@@ -8,7 +8,8 @@ import {
   Body,
   Get,
   UseInterceptors,
-   ClassSerializerInterceptor
+   ClassSerializerInterceptor,
+   Patch
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -19,6 +20,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
+import { UpdateUserDto } from '../user/dto/update-user.dto';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller("auth")
@@ -40,6 +42,7 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.OK)
   async register(@Body() createUserDto: CreateUserDto) {
+    createUserDto.administrador = false
     const user = await this.userService.create(createUserDto);
     const token = await this.authService.login(user);
     return { ...user, ...token, senha: undefined };
@@ -48,6 +51,12 @@ export class AuthController {
   @Get('/me')
   async getMe(@CurrentUser() currentUser: User) {
     return await this.userService.findOne(currentUser.id);
+  }
+
+  @Patch('/me')
+  update(@CurrentUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
+    delete updateUserDto.administrador
+    return this.userService.update(currentUser.id, updateUserDto)
   }
 
 }
