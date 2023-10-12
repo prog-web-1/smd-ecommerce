@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
@@ -16,19 +16,28 @@ export class BaseService<T, CreateDto extends DeepPartial<T>, UpdateDto extends 
     return this.repository.find();
   }
 
-  findOne(id: number) {
-    return this.repository.findOneById(id)
+  async findOne(id: number) {
+    const obj = await this.repository.findOneById(id)
+    if (!obj) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND)
+    }
+    return obj
   }
 
   findOneBy(options: FindOptionsWhere<T>) {
     return this.repository.findOneBy(options);
   }
 
-  update(id: number, updateDto: UpdateDto) {
-    return this.repository.update(id, updateDto)
+  async update(id: number, updateDto: UpdateDto) {
+    await this.repository.update(id, updateDto)
+    return this.findOne(id)
   }
 
-  remove(id: number) {
-    return this.repository.delete(id);
+  async remove(id: number) {
+    const result = await this.repository.delete(id);
+    if (result.affected === 0) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND)
+    }
+    return result
   }
 }
