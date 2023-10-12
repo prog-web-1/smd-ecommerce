@@ -7,6 +7,7 @@ import { IsUniqueConstraint } from './validators/unique';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -18,12 +19,13 @@ import { APP_GUARD } from '@nestjs/core';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_DB,
-      entities: [User],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       ssl: process.env.DATABASE_TYPE === 'postgres' ? true : undefined,
     }),
     UserModule,
     AuthModule,
+    CategoryModule,
   ],
   providers: [
     IsUniqueConstraint,
