@@ -49,12 +49,12 @@ export class AuthController {
   }
 
   @Get('/me')
-  async getMe(@CurrentUser() currentUser: User) {
-    return await this.userService.findOne(currentUser.id);
+  getMe(@CurrentUser() currentUser: User) {
+    return this.userService.findOne(currentUser.id);
   }
 
   @Patch('/me')
-  update(@CurrentUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
+  updateOwnProfile(@CurrentUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
     delete updateUserDto.administrador
     return this.userService.update(currentUser.id, updateUserDto)
   }

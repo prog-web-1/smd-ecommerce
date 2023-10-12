@@ -13,11 +13,9 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    return await this.userRepository.save({
-      ...createUserDto,
-      senha: bcrypt.hashSync(createUserDto.senha, 10)
-    })
+  create(createUserDto: CreateUserDto) {
+    createUserDto.senha = bcrypt.hashSync(createUserDto.senha, 10)
+    return this.userRepository.save(createUserDto)
   }
 
   findAll() {
