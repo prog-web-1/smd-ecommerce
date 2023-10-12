@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { BaseController } from '../base/base.controller';
 import { User } from './entities/user.entity';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseError } from '../base/base.error';
 
 @Controller('user')
@@ -33,6 +33,7 @@ export class UserController extends BaseController<User, CreateUserDto, UpdateUs
 
   @Patch(':id')
   @ApiResponse({status: 400, type: BaseError})
+  @ApiBody({type: CreateUserDto})
   update(id: string, updateDto: UpdateUserDto) {
     return super.update(id, updateDto);
   }

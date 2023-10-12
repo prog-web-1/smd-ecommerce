@@ -21,7 +21,7 @@ import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginRequestBody } from './models/LoginRequestBody';
 import { AuthResponse } from './models/AuthResponse';
 import { BaseError } from '../base/base.error';
@@ -59,11 +59,14 @@ export class AuthController {
   }
 
   @Get('/me')
+  @ApiHeader({name: 'Authorization', description: 'Bearer token'})
   getMe(@CurrentUser() currentUser: User) {
     return this.userService.findOneBy({id: currentUser.id});
   }
 
   @Patch('/me')
+  @ApiBody({type: CreateUserDto})
+  @ApiHeader({name: 'Authorization', description: 'Bearer token'})
   updateOwnProfile(@CurrentUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
     delete updateUserDto.administrador
     return this.userService.update(currentUser.id, updateUserDto)
