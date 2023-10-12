@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async validateUser(login: string, senha: string): Promise<User> {
-    const user = await this.userService.findOneBy({login});
+    const user = await this.userService.findOneBy({ login });
     if (user) {
       const isPasswordValid = await bcrypt.compare(senha, user.senha);
 
@@ -39,8 +39,6 @@ export class AuthService {
       }
     }
 
-    throw new UnauthorizedError(
-      'Login or password provided is incorrect.',
-    );
+    throw new UnauthorizedError('Login or password provided is incorrect.');
   }
 }

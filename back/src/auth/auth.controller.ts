@@ -8,8 +8,8 @@ import {
   Body,
   Get,
   UseInterceptors,
-   ClassSerializerInterceptor,
-   Patch
+  ClassSerializerInterceptor,
+  Patch,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -27,20 +27,23 @@ import { AuthResponse } from './models/AuthResponse';
 import { BaseError } from '../base/base.error';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller("auth")
+@Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly userService: UserService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @IsPublic()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, type: AuthResponse })
-  @ApiResponse({status: 400, type: BaseError})
-  @ApiBody({type: LoginRequestBody})
+  @ApiResponse({ status: 400, type: BaseError })
+  @ApiBody({ type: LoginRequestBody })
   async login(@Request() req: AuthRequest) {
-    const user: User = req.user
+    const user: User = req.user;
     const token = await this.authService.login(user);
     return { ...user, ...token };
   }
@@ -50,26 +53,28 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, type: AuthResponse })
-  @ApiResponse({status: 400, type: BaseError})
+  @ApiResponse({ status: 400, type: BaseError })
   async register(@Body() createUserDto: CreateUserDto) {
-    createUserDto.administrador = false
+    createUserDto.administrador = false;
     const user = await this.userService.create(createUserDto);
     const token = await this.authService.login(user);
     return { ...user, ...token, senha: undefined };
   }
 
   @Get('/me')
-  @ApiHeader({name: 'Authorization', description: 'Bearer token'})
+  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
   getMe(@CurrentUser() currentUser: User) {
-    return this.userService.findOne(currentUser.id)
+    return this.userService.findOne(currentUser.id);
   }
 
   @Patch('/me')
-  @ApiBody({type: CreateUserDto})
-  @ApiHeader({name: 'Authorization', description: 'Bearer token'})
-  updateOwnProfile(@CurrentUser() currentUser: User, @Body() updateUserDto: UpdateUserDto) {
-    delete updateUserDto.administrador
-    return this.userService.update(currentUser.id, updateUserDto)
+  @ApiBody({ type: CreateUserDto })
+  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
+  updateOwnProfile(
+    @CurrentUser() currentUser: User,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    delete updateUserDto.administrador;
+    return this.userService.update(currentUser.id, updateUserDto);
   }
-
 }

@@ -18,13 +18,12 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const options = new DocumentBuilder()
-  .setTitle('SMD E-commerce')
-  .setDescription('Trabalho para disciplina de Programação para Web :)')
-  .setVersion('1.0')
-  .build();
+    .setTitle('SMD E-commerce')
+    .setDescription('Trabalho para disciplina de Programação para Web :)')
+    .setVersion('1.0')
+    .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api/documentation', app, document);
-  
 
   await app.listen(4000);
 }

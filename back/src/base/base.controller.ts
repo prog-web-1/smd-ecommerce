@@ -1,12 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
-import { BaseService } from './base.service';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { DeepPartial } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { ApiResponse } from '@nestjs/swagger';
-import { BaseError } from './base.error';
+import { BaseService } from './base.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
-export class BaseController<T, CreateDto extends DeepPartial<T>, UpdateDto extends QueryDeepPartialEntity<T>> {
+export class BaseController<
+  T,
+  CreateDto extends DeepPartial<T>,
+  UpdateDto extends QueryDeepPartialEntity<T>,
+> {
   constructor(private readonly service: BaseService<T, CreateDto, UpdateDto>) {}
 
   @Post()

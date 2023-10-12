@@ -27,7 +27,7 @@ import { UserModule } from '../user/user.module';
   controllers: [AuthController],
   providers: [AuthService, ConfigService, LocalStrategy, JwtStrategy],
 })
-export class AuthModule implements NestModule{
+export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoginValidationMiddleware).forRoutes('auth/login');
   }

@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseError {
-    @ApiProperty()
-    message:  string[];
-    @ApiProperty()
-    error: string;
-    @ApiProperty()
-    statusCode: number;
+  @ApiProperty()
+  message: string[];
+  @ApiProperty()
+  error: string;
+  @ApiProperty()
+  statusCode: number;
 }
