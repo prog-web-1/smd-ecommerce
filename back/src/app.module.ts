@@ -4,6 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { IsUniqueConstraint } from './validators/unique';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -19,9 +22,14 @@ import { IsUniqueConstraint } from './validators/unique';
       synchronize: true,
     }),
     UserModule,
+    AuthModule,
   ],
   providers: [
-    IsUniqueConstraint
+    IsUniqueConstraint,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ]
 })
 export class AppModule {}
