@@ -10,8 +10,9 @@ export class BaseService<
 > {
   constructor(private repository: Repository<T>) {}
 
-  create(createDto: CreateDto) {
-    return this.repository.save(createDto);
+  async create(createDto: CreateDto) {
+    const data = await this.repository.save(createDto);
+    return this.findOne(data['id']);
   }
 
   findAll() {

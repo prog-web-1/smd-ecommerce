@@ -18,4 +18,9 @@ export class VendaService extends BaseService<
   ) {
     super(vendaRepository);
   }
+
+  create(createDto: CreateVendaDto) {
+    console.log(createDto);
+    return super.create(createDto);
+  }
 }
