@@ -17,17 +17,17 @@ export class UserController extends BaseController<User, CreateUserDto, UpdateUs
   @Post()
   @ApiResponse({status: 201, type: User})
   @ApiResponse({status: 400, type: BaseError})
-  create(createDto: CreateUserDto): Promise<CreateUserDto & User> {
+  create(createDto: CreateUserDto) {
     return super.create(createDto);
   }
 
   @Get()
-  findAll(): Promise<User[]> {
+  findAll() {
     return super.findAll();
   }
 
   @Get(':id')
-  findOne(id: string): Promise<User> {
+  findOne(id: string) {
     return super.findOne(id);
   }
 
