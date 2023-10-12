@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from '../base/base.service';
-import { Category } from './entities/category.entity';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { BaseService } from '../base/base.service';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService extends BaseService<
@@ -17,5 +17,11 @@ export class CategoryService extends BaseService<
     private categoryRepository: Repository<Category>,
   ) {
     super(categoryRepository);
+  }
+
+  findAll() {
+    return super.findAll({
+      relations: ['products'],
+    });
   }
 }

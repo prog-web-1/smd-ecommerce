@@ -1,5 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindManyOptions,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
@@ -15,8 +20,8 @@ export class BaseService<
     return this.findOne(data['id']);
   }
 
-  findAll() {
-    return this.repository.find();
+  findAll(options?: FindManyOptions<T>) {
+    return this.repository.find(options);
   }
 
   async findOne(id: number) {
