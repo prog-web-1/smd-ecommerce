@@ -14,11 +14,11 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthRequest } from './models/AuthRequest';
 import { IsPublic } from './decorators/is-public.decorator';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { PublicAuthGuard } from './guards/public-auth-guard';
-import { UserService } from 'src/user/user.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from 'src/user/entities/user.entity';
+import { UserService } from '../user/user.service';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { User } from '../user/entities/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller("auth")
