@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { DeepPartial } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseService } from './base.service';
+import { BaseFilter } from './base.filter';
 
 @UseInterceptors(ClassSerializerInterceptor)
 export class BaseController<
@@ -26,8 +28,8 @@ export class BaseController<
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() filter: BaseFilter) {
+    return this.service.findAll(filter);
   }
 
   @Get(':id')

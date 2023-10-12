@@ -6,6 +6,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { VendaService } from './venda.service';
 import { CreateVendaDto } from './dto/create-venda.dto';
@@ -14,6 +15,9 @@ import { BaseController } from '../base/base.controller';
 import { Venda } from './entities/venda.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseError } from '../base/base.error';
+import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
+
+class VendaFindAllResponseType extends BaseFilterResponse<Venda>(Venda) {}
 
 @Controller('venda')
 @ApiTags('venda')
@@ -34,8 +38,9 @@ export class VendaController extends BaseController<
   }
 
   @Get()
-  findAll() {
-    return super.findAll();
+  @ApiResponse({ status: 200, type: VendaFindAllResponseType })
+  findAll(@Query() filter: BaseFilter) {
+    return super.findAll(filter);
   }
 
   @Get(':id')

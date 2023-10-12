@@ -6,6 +6,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -14,6 +15,11 @@ import { BaseController } from '../base/base.controller';
 import { Category } from './entities/category.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseError } from '../base/base.error';
+import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
+
+class CategoryFindAllResponseType extends BaseFilterResponse<Category>(
+  Category,
+) {}
 
 @Controller('category')
 @ApiTags('category')
@@ -34,8 +40,9 @@ export class CategoryController extends BaseController<
   }
 
   @Get()
-  findAll() {
-    return super.findAll();
+  @ApiResponse({ status: 200, type: CategoryFindAllResponseType })
+  findAll(@Query() filter: BaseFilter) {
+    return super.findAll(filter);
   }
 
   @Get(':id')

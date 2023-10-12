@@ -1,11 +1,13 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
   DeepPartial,
   FindManyOptions,
+  FindOptionsOrder,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { BaseFilter, IBaseFilter } from './base.filter';
 
 @Injectable()
 export class BaseService<
@@ -20,8 +22,25 @@ export class BaseService<
     return this.findOne(data['id']);
   }
 
-  findAll(options?: FindManyOptions<T>) {
-    return this.repository.find(options);
+  async findAll(filter: BaseFilter, options: FindManyOptions<T> = {}) {
+    const { order: orderBy, sort, offset, limit } = filter;
+    const order = {
+      [orderBy]: sort,
+    } as FindOptionsOrder<T>;
+
+    const data = await this.repository.findAndCount({
+      ...options,
+      order,
+      skip: offset,
+      take: limit,
+    });
+
+    return {
+      data: data[0],
+      total: data[1],
+      offset,
+      limit,
+    } as IBaseFilter<T>;
   }
 
   async findOne(id: number) {

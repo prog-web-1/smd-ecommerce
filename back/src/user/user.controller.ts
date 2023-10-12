@@ -6,6 +6,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,6 +15,9 @@ import { BaseController } from '../base/base.controller';
 import { User } from './entities/user.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseError } from '../base/base.error';
+import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
+
+class UserFindAllResponseType extends BaseFilterResponse<User>(User) {}
 
 @Controller('user')
 @ApiTags('user')
@@ -34,8 +38,9 @@ export class UserController extends BaseController<
   }
 
   @Get()
-  findAll() {
-    return super.findAll();
+  @ApiResponse({ status: 200, type: UserFindAllResponseType })
+  findAll(@Query() filter: BaseFilter) {
+    return super.findAll(filter);
   }
 
   @Get(':id')
