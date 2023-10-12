@@ -20,6 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
       database: process.env.DATABASE_DB,
       entities: [User],
       synchronize: true,
+      ssl: true,
     }),
     UserModule,
     AuthModule,
