@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { IsExistsConstraint } from './validators/exists';
+import { VendaModule } from './venda/venda.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { IsExistsConstraint } from './validators/exists';
     AuthModule,
     CategoryModule,
     ProductModule,
+    VendaModule,
   ],
   providers: [
     IsUniqueConstraint,

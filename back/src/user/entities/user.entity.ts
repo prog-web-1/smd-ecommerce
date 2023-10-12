@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Venda } from '../../venda/entities/venda.entity';
 
 @Entity({ name: 'usuario' })
 export class User {
@@ -26,4 +27,7 @@ export class User {
 
   @Column({ default: false })
   administrador: boolean;
+
+  @OneToMany(() => Venda, (venda) => venda.user)
+  vendas: Venda[];
 }
