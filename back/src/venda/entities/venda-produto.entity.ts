@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Product } from '../../product/entities/product.entity';
 import { Venda } from './venda.entity';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity({ name: 'venda_produto' })
 export class VendaProduto {
@@ -29,4 +29,10 @@ export class VendaProduto {
     nullable: false,
   })
   produto: Product;
+
+  @Expose()
+  @ApiProperty({ type: Number })
+  get valor(): number {
+    return this.quantidade * this.produto.preco;
+  }
 }
