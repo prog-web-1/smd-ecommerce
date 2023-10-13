@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from '../base/base.service';
-import { Product } from './entities/product.entity';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
+import { BaseService } from '../base/base.service';
+import { CreateProductDto } from './dto/create-product.dto';
+import { ProductFilter } from './dto/find-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductService extends BaseService<
@@ -17,5 +18,13 @@ export class ProductService extends BaseService<
     private productRepository: Repository<Product>,
   ) {
     super(productRepository);
+  }
+
+  findAll(filter: ProductFilter) {
+    const where = {};
+    if (filter.nome) where['nome'] = ILike(`%${filter.nome}%`);
+    return super.findAll(filter, {
+      where,
+    });
   }
 }

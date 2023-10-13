@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { ILike, Repository } from 'typeorm';
 import { BaseService } from '../base/base.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserFilter } from './dto/find-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService extends BaseService<
@@ -29,5 +30,13 @@ export class UserService extends BaseService<
     if (updateUserDto.senha)
       updateUserDto.senha = bcrypt.hashSync(updateUserDto.senha, 10);
     return super.update(id, updateUserDto);
+  }
+
+  findAll(filter: UserFilter) {
+    const where = {};
+    if (filter.nome) where['nome'] = ILike(`%${filter.nome}%`);
+    return super.findAll(filter, {
+      where,
+    });
   }
 }

@@ -1,24 +1,25 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  HttpStatus,
-  HttpCode,
   Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { BaseController } from '../base/base.controller';
-import { Product } from './entities/product.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BaseController } from '../base/base.controller';
 import { BaseError } from '../base/base.error';
-import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
-
-class ProductFindAllResponseType extends BaseFilterResponse<Product>(Product) {}
+import { CreateProductDto } from './dto/create-product.dto';
+import {
+  ProductFilter,
+  ProductFindAllResponseType,
+} from './dto/find-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { Product } from './entities/product.entity';
+import { ProductService } from './product.service';
 
 @Controller('product')
 @ApiTags('product')
@@ -40,7 +41,7 @@ export class ProductController extends BaseController<
 
   @Get()
   @ApiResponse({ status: 200, type: ProductFindAllResponseType })
-  findAll(@Query() filter: BaseFilter) {
+  findAll(@Query() filter: ProductFilter) {
     return super.findAll(filter);
   }
 

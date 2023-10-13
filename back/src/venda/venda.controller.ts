@@ -1,23 +1,21 @@
 import {
   Controller,
-  Get,
-  Post,
-  Patch,
   Delete,
-  HttpStatus,
+  Get,
   HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { VendaService } from './venda.service';
-import { CreateVendaDto } from './dto/create-venda.dto';
-import { UpdateVendaDto } from './dto/update-venda.dto';
-import { BaseController } from '../base/base.controller';
-import { Venda } from './entities/venda.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BaseController } from '../base/base.controller';
 import { BaseError } from '../base/base.error';
-import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
-
-class VendaFindAllResponseType extends BaseFilterResponse<Venda>(Venda) {}
+import { CreateVendaDto } from './dto/create-venda.dto';
+import { VendaFilter, VendaFindAllResponseType } from './dto/find-venda.dto';
+import { UpdateVendaDto } from './dto/update-venda.dto';
+import { Venda } from './entities/venda.entity';
+import { VendaService } from './venda.service';
 
 @Controller('venda')
 @ApiTags('venda')
@@ -39,7 +37,7 @@ export class VendaController extends BaseController<
 
   @Get()
   @ApiResponse({ status: 200, type: VendaFindAllResponseType })
-  findAll(@Query() filter: BaseFilter) {
+  findAll(@Query() filter: VendaFilter) {
     return super.findAll(filter);
   }
 

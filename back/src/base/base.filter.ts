@@ -27,7 +27,7 @@ export class BaseFilter {
   public sort: SortOrder = SortOrder.DESC;
 }
 
-export interface IBaseFilter<T> {
+export interface IBaseFilterResponse<T> {
   data: T[];
   total: number;
   offset: number;
@@ -35,7 +35,7 @@ export interface IBaseFilter<T> {
 }
 
 export function BaseFilterResponse<T>(ResourceClass) {
-  class GetManyAndCount implements IBaseFilter<T> {
+  class GetManyAndCount implements IBaseFilterResponse<T> {
     @ApiProperty({ type: [ResourceClass] })
     data: T[];
     @ApiProperty()

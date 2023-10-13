@@ -7,7 +7,7 @@ import {
   Repository,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { BaseFilter, IBaseFilter } from './base.filter';
+import { BaseFilter, IBaseFilterResponse } from './base.filter';
 
 @Injectable()
 export class BaseService<
@@ -40,7 +40,7 @@ export class BaseService<
       total: data[1],
       offset,
       limit,
-    } as IBaseFilter<T>;
+    } as IBaseFilterResponse<T>;
   }
 
   async findOne(id: number) {

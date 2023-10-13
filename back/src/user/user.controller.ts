@@ -1,23 +1,21 @@
 import {
   Controller,
-  Get,
-  Post,
-  Patch,
   Delete,
-  HttpStatus,
+  Get,
   HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { BaseController } from '../base/base.controller';
-import { User } from './entities/user.entity';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BaseController } from '../base/base.controller';
 import { BaseError } from '../base/base.error';
-import { BaseFilter, BaseFilterResponse } from '../base/base.filter';
-
-class UserFindAllResponseType extends BaseFilterResponse<User>(User) {}
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserFilter, UserFindAllResponseType } from './dto/find-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { UserService } from './user.service';
 
 @Controller('user')
 @ApiTags('user')
@@ -39,7 +37,7 @@ export class UserController extends BaseController<
 
   @Get()
   @ApiResponse({ status: 200, type: UserFindAllResponseType })
-  findAll(@Query() filter: BaseFilter) {
+  findAll(@Query() filter: UserFilter) {
     return super.findAll(filter);
   }
 
