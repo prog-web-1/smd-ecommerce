@@ -29,5 +29,5 @@ export class User {
   administrador: boolean;
 
   @OneToMany(() => Venda, (venda) => venda.user)
-  vendas: Venda[];
+  compras: Venda[];
 }

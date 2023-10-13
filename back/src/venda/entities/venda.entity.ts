@@ -14,7 +14,7 @@ export class Venda {
   id: number;
   @CreateDateColumn()
   data_hora: Date;
-  @ManyToOne(() => User, (user) => user.vendas, {
+  @ManyToOne(() => User, (user) => user.compras, {
     eager: true,
     nullable: false,
   })
