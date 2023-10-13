@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { ControllerFactory } from '../base/base.controller';
 import { CreateVendaDto } from './dto/create-venda.dto';
@@ -41,5 +41,14 @@ export class VendaController extends ControllerFactory<
   comprar(@Body() createDto: CreateCompraDto, @CurrentUser() user: User) {
     createDto.user = user;
     return this.service.create(createDto);
+  }
+
+  @Post('validarCarrinho')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: '4XX', type: BaseError })
+  @ApiBody({ type: CreateCompraDto })
+  async validarCarrinho(@Body() createDto: CreateCompraDto) {
+    await this.service.validateCartAmounts(createDto);
   }
 }
