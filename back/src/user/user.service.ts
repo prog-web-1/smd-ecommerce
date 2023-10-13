@@ -39,4 +39,10 @@ export class UserService extends BaseService<
       where,
     });
   }
+
+  findOne(id: number) {
+    return super.findOne(id, {
+      relations: ['compras', 'compras.produtos'],
+    });
+  }
 }

@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
   DeepPartial,
   FindManyOptions,
+  FindOneOptions,
   FindOptionsOrder,
-  FindOptionsWhere,
   Repository,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -47,16 +47,16 @@ export class BaseService<
     } as IBaseFilterResponse<T>;
   }
 
-  async findOne(id: number) {
-    const obj = await this.repository.findOneById(id);
+  async findOne(id: number, options: FindOneOptions<T> = {}) {
+    const obj = await this.findOneBy({ ...options, where: { id } as any });
     if (!obj) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
     return obj;
   }
 
-  findOneBy(options: FindOptionsWhere<T>) {
-    return this.repository.findOneBy(options);
+  findOneBy(options: FindOneOptions<T>) {
+    return this.repository.findOne(options);
   }
 
   async update(id: number, updateDto: UpdateDto) {
