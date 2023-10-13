@@ -109,7 +109,7 @@ export function ControllerFactory<
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiQuery({ type: queryDto })
     @ApiBearerAuth()
-    @Roles(UserRole.User)
+    @Roles(UserRole.Admin)
     findAll(@Query() filter: Q) {
       return this.service.findAll(filter);
     }
@@ -118,7 +118,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 200, type: entity })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBearerAuth()
-    @Roles(UserRole.User)
+    @Roles(UserRole.Admin)
     findOne(@Param('id') id: string) {
       return this.service.findOne(+id);
     }

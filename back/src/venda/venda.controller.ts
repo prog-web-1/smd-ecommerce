@@ -12,6 +12,7 @@ import { UserRole } from '../auth/models/UserRole';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { CreateCompraDto } from './dto/compra-compra.dto';
+import { IsPublic } from '../auth/decorators/is-public.decorator';
 
 @Controller('venda')
 @ApiTags('venda')
@@ -48,6 +49,7 @@ export class VendaController extends ControllerFactory<
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: '4XX', type: BaseError })
   @ApiBody({ type: CreateCompraDto })
+  @IsPublic()
   async validarCarrinho(@Body() createDto: CreateCompraDto) {
     await this.service.validateCartAmounts(createDto);
   }

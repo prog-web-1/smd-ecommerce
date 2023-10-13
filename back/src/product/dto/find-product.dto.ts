@@ -17,7 +17,6 @@ export class ProductFilter extends BaseFilter {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => value === 'true')
-  @ApiProperty({ required: false })
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  public emEstoque: Boolean;
+  @ApiProperty({ required: false, type: Boolean })
+  public emEstoque: boolean;
 }
