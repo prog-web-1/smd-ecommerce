@@ -21,5 +21,5 @@ export class CreateVendaDto {
   @IsArray()
   @IsNotEmpty()
   @ArrayMinSize(1)
-  produtos: CreateVendaProdutoDto[];
+  carrinho: CreateVendaProdutoDto[];
 }

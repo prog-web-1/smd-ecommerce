@@ -39,7 +39,7 @@ export class VendaService extends BaseService<
   }
 
   async validateCartAmounts(cart: CreateVendaDto) {
-    const products = cart.produtos;
+    const products = cart.carrinho;
     const insufficient = [];
     for (const product of products) {
       const productInDb = await this.productService.findOne(product.produto.id);
@@ -57,7 +57,7 @@ export class VendaService extends BaseService<
   }
 
   async decreaseProductAmounts(cart: CreateVendaDto) {
-    const products = cart.produtos;
+    const products = cart.carrinho;
     for (const product of products) {
       const productInDb = await this.productService.findOne(product.produto.id);
       productInDb.quantidade -= product.quantidade;

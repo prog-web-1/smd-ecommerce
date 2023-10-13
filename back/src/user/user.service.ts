@@ -42,7 +42,7 @@ export class UserService extends BaseService<
 
   findOne(id: number) {
     return super.findOne(id, {
-      relations: ['compras', 'compras.produtos'],
+      relations: ['compras', 'compras.carrinho'],
     });
   }
 }

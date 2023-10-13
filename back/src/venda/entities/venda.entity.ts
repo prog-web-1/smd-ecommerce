@@ -23,5 +23,5 @@ export class Venda {
     eager: true,
     cascade: true,
   })
-  produtos: VendaProduto[];
+  carrinho: VendaProduto[];
 }

@@ -19,7 +19,7 @@ export class VendaProduto {
   @Column()
   quantidade: number;
 
-  @ManyToOne(() => Venda, (venda) => venda.produtos, {
+  @ManyToOne(() => Venda, (venda) => venda.carrinho, {
     nullable: false,
   })
   venda: Venda;
