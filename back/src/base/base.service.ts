@@ -37,9 +37,13 @@ export class BaseService<
 
     return {
       data: data[0],
-      total: data[1],
-      offset,
-      limit,
+      pagination: {
+        total: data[1],
+        offset,
+        limit,
+        sort,
+        order: orderBy,
+      },
     } as IBaseFilterResponse<T>;
   }
 

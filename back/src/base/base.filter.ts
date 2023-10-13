@@ -29,9 +29,20 @@ export class BaseFilter {
 
 export interface IBaseFilterResponse<T> {
   data: T[];
+  pagination: IPagination;
+}
+
+class IPagination {
+  @ApiProperty()
   total: number;
+  @ApiProperty()
   offset: number;
+  @ApiProperty()
   limit: number;
+  @ApiProperty()
+  sort: SortOrder;
+  @ApiProperty()
+  order: string;
 }
 
 export function BaseFilterResponse<T>(ResourceClass) {
@@ -39,11 +50,7 @@ export function BaseFilterResponse<T>(ResourceClass) {
     @ApiProperty({ type: [ResourceClass] })
     data: T[];
     @ApiProperty()
-    total: number;
-    @ApiProperty()
-    offset: number;
-    @ApiProperty()
-    limit: number;
+    pagination: IPagination;
   }
   return GetManyAndCount;
 }
