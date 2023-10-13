@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { BaseError } from '../base/base.error';
 import { BaseService } from '../base/base.service';
 import { ProductService } from '../product/product.service';
@@ -24,8 +24,8 @@ export class VendaService extends BaseService<
   }
 
   findAll(filter: VendaFilter) {
-    const where = {};
-    if (filter.cliente) where['user'] = { nome: ILike(`%${filter.cliente}%`) };
+    const where = {} as FindOptionsWhere<Venda>;
+    if (filter.cliente) where.user = { nome: ILike(`%${filter.cliente}%`) };
     return super.findAll(filter, {
       where,
     });

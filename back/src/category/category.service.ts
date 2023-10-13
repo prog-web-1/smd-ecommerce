@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { BaseService } from '../base/base.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryFilter } from './dto/find-category.dto';
@@ -21,8 +21,8 @@ export class CategoryService extends BaseService<
   }
 
   findAll(filter: CategoryFilter) {
-    const where = {};
-    if (filter.nome) where['nome'] = ILike(`%${filter.nome}%`);
+    const where = {} as FindOptionsWhere<Category>;
+    if (filter.nome) where.nome = ILike(`%${filter.nome}%`);
     return super.findAll(filter, {
       relations: ['products'],
       where,

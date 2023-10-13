@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { BaseService } from '../base/base.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserFilter } from './dto/find-user.dto';
@@ -33,8 +33,8 @@ export class UserService extends BaseService<
   }
 
   findAll(filter: UserFilter) {
-    const where = {};
-    if (filter.nome) where['nome'] = ILike(`%${filter.nome}%`);
+    const where = {} as FindOptionsWhere<User>;
+    if (filter.nome) where.nome = ILike(`%${filter.nome}%`);
     return super.findAll(filter, {
       where,
     });
