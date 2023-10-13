@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, Min, IsString } from 'class-validator';
 
 export enum SortOrder {
   ASC = 'ASC',
@@ -9,11 +9,13 @@ export enum SortOrder {
 
 export class BaseFilter {
   @IsNumber()
+  @Min(0)
   @ApiProperty({ required: false, default: 0 })
   @Transform(({ value }) => parseInt(value))
   public offset: number = 0;
 
   @IsNumber()
+  @Min(0)
   @ApiProperty({ required: false, default: 10 })
   @Transform(({ value }) => parseInt(value))
   public limit: number = 10;

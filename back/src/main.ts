@@ -21,7 +21,10 @@ async function bootstrap() {
     .setTitle('SMD E-commerce')
     .setDescription('Trabalho para disciplina de Programação para Web :)')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
     .build();
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api/documentation', app, document);
 

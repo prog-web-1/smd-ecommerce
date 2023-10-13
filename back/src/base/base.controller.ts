@@ -17,7 +17,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { DeepPartial } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseError } from './base.error';
@@ -95,6 +95,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 201, type: entity })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBody({ type: createDto })
+    @ApiBearerAuth()
     create(@Body() createDto: C) {
       return this.service.create(createDto);
     }
@@ -104,6 +105,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 200, type: filterDto })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiQuery({ type: queryDto })
+    @ApiBearerAuth()
     findAll(@Query() filter: Q) {
       return this.service.findAll(filter);
     }
@@ -111,6 +113,7 @@ export function ControllerFactory<
     @Get(':id')
     @ApiResponse({ status: 200, type: entity })
     @ApiResponse({ status: '4XX', type: BaseError })
+    @ApiBearerAuth()
     findOne(@Param('id') id: string) {
       return this.service.findOne(+id);
     }
@@ -120,6 +123,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 200, type: entity })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBody({ type: createDto })
+    @ApiBearerAuth()
     update(@Param('id') id: string, @Body() updateDto: U) {
       return this.service.update(+id, updateDto);
     }
@@ -128,6 +132,7 @@ export function ControllerFactory<
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiResponse({ status: 204 })
     @ApiResponse({ status: '4XX', type: BaseError })
+    @ApiBearerAuth()
     remove(@Param('id') id: string) {
       return this.service.remove(+id);
     }
