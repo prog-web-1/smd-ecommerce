@@ -10,6 +10,7 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { IsExistsConstraint } from './validators/exists';
 import { VendaModule } from './venda/venda.module';
+import { RolesGuard } from './auth/guards/role-auth.guard';
 
 @Module({
   imports: [
@@ -37,6 +38,10 @@ import { VendaModule } from './venda/venda.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

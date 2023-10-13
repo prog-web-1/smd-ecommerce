@@ -23,6 +23,8 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import { BaseError } from './base.error';
 import { BaseFilter, IBaseFilterResponse } from './base.filter';
 import { BaseService } from './base.service';
+import { Roles } from '../auth/decorators/role.decorator';
+import { UserRole } from '../auth/models/UserRole';
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
@@ -96,6 +98,7 @@ export function ControllerFactory<
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBody({ type: createDto })
     @ApiBearerAuth()
+    @Roles(UserRole.Admin)
     create(@Body() createDto: C) {
       return this.service.create(createDto);
     }
@@ -106,6 +109,7 @@ export function ControllerFactory<
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiQuery({ type: queryDto })
     @ApiBearerAuth()
+    @Roles(UserRole.User)
     findAll(@Query() filter: Q) {
       return this.service.findAll(filter);
     }
@@ -114,6 +118,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 200, type: entity })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBearerAuth()
+    @Roles(UserRole.User)
     findOne(@Param('id') id: string) {
       return this.service.findOne(+id);
     }
@@ -124,6 +129,7 @@ export function ControllerFactory<
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBody({ type: createDto })
     @ApiBearerAuth()
+    @Roles(UserRole.Admin)
     update(@Param('id') id: string, @Body() updateDto: U) {
       return this.service.update(+id, updateDto);
     }
@@ -133,6 +139,7 @@ export function ControllerFactory<
     @ApiResponse({ status: 204 })
     @ApiResponse({ status: '4XX', type: BaseError })
     @ApiBearerAuth()
+    @Roles(UserRole.Admin)
     remove(@Param('id') id: string) {
       return this.service.remove(+id);
     }

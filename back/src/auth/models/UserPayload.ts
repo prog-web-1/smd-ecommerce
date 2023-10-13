@@ -4,4 +4,5 @@ export interface UserPayload {
   nome: string;
   iat?: number;
   exp?: number;
+  administrador: boolean;
 }

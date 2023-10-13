@@ -19,6 +19,7 @@ export class AuthService {
       sub: user.id,
       login: user.login,
       nome: user.nome,
+      administrador: user.administrador,
     };
 
     return {
