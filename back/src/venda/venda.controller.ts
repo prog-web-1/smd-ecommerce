@@ -45,7 +45,7 @@ export class VendaController extends ControllerFactory<
 
   @Post('validarCarrinho')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 204 })
   @ApiResponse({ status: '4XX', type: BaseError })
   @ApiBody({ type: CreateCompraDto })
   async validarCarrinho(@Body() createDto: CreateCompraDto) {

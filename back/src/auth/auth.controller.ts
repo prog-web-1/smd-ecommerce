@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -21,7 +22,7 @@ import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
-import { ApiBody, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginRequestBody } from './models/LoginRequestBody';
 import { AuthResponse } from './models/AuthResponse';
 import { BaseError } from '../base/base.error';
@@ -61,20 +62,28 @@ export class AuthController {
     return { ...user, ...token, senha: undefined };
   }
 
-  @Get('/me')
-  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
+  @Get('me')
+  @ApiBearerAuth()
   getMe(@CurrentUser() currentUser: User) {
     return this.userService.findOne(currentUser.id);
   }
 
-  @Patch('/me')
+  @Patch('me')
   @ApiBody({ type: CreateUserDto })
-  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
-  updateOwnProfile(
+  @ApiBearerAuth()
+  updateMe(
     @CurrentUser() currentUser: User,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     delete updateUserDto.administrador;
     return this.userService.update(currentUser.id, updateUserDto);
+  }
+
+  @Delete('me')
+  @ApiBearerAuth()
+  @ApiResponse({ status: 204 })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteMe(@CurrentUser() currentUser: User) {
+    return this.userService.remove(currentUser.id);
   }
 }
