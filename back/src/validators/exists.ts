@@ -35,7 +35,7 @@ export class IsExistsConstraint implements ValidatorConstraintInterface {
   defaultMessage(validationArguments?: ValidationArguments): string {
     // return custom field message
     const field: string = validationArguments.property;
-    return `${field} doesnt exist`;
+    return `Este ${field} não existe.`;
   }
 }
 

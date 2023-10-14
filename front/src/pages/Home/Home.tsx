@@ -1,8 +1,9 @@
 import PageContainer from "../../components/PageContainer/PageContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductsCarousel from "../../components/ProductsCarousel/ProductsCarousel";
 
 import "./Home.css";
+import axios from "axios";
 
 const data = [
     {
@@ -96,7 +97,11 @@ const categoriesData = [
 
 export default function Home() {
     const [categories, setCategories] = useState(categoriesData);
-
+    useEffect(() => {
+        const api = axios.create({
+        });
+        api.post("https://back-byna.onrender.com/auth/login", {login: "admin", senha: "1234"}).then(a => console.log(a))
+    }, [])
     return (
         <PageContainer>
             <div style={{paddingBottom: "20px"}}>
