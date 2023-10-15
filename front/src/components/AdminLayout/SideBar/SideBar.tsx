@@ -4,6 +4,7 @@ import { testUrl } from '../../../tools/testUrl';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 import "./SideBar.css";
+import { Link } from 'react-router-dom';
 
 type SidebarItem = {
     key: string;
@@ -18,25 +19,25 @@ type SidebarItem = {
 const items: SidebarItem[] = [
     {
         key: "reports",
-        link: "admin/reports",
+        link: "/admin/reports",
         icon: <MdHome/>,
         label: "Relatórios",
     },
     {
         key: "purchases",
-        link: "admin/purchases",
+        link: "/admin/purchases",
         icon: <AiOutlineShoppingCart/>,
         label: "Vendas",
     },
     {
         key: "products",
-        link: "admin/products",
+        link: "/admin/products",
         icon: <MdOutlineSell/>,
         label: "Produtos",
     },
     {
         key: "categories",
-        link: "admin/categories",
+        link: "/admin/categories",
         icon: <MdListAlt/>,
         label: "Categorias",
     },
@@ -47,14 +48,14 @@ function SideBar() {
         <div className={`side-bar`}>
             <div className="side-bar-body">
                 {items.map(item => (
-                    <div 
+                    <Link 
                         key={item.key}
-                        onClick={item.onClick === undefined ? () => {window.location.pathname = item.link} : item.onClick}
+                        to={item.link}
                         className={ testUrl(item.key) || (item.testSidebar ? testUrl(item.testSidebar) : false) ? "side-bar-item-active" : "side-bar-item"}
                     >
                         {React.cloneElement(item.icon, {className: "side-bar-icon"})}
                         <div className="side-bar-item-text-content">{item.label}</div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

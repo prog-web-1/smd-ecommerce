@@ -10,6 +10,6 @@ interface ILabelButtonProps {
 
 export function LabelButton(props: ILabelButtonProps) {
     return (
-        <button className={`label-button ${!props.isSecondary ? "label-button-primary" : "label-button-secondary"} ${props.extraClass}`} onClick={()=>{props.callback()}} disabled={props.disabled} >{props.label}</button>
+        <button className={`label-button ${!props.isSecondary ? "label-button-primary" : "label-button-secondary"} ${props.extraClass}`} type={"button"} onClick={()=>{props.callback()}} disabled={props.disabled} >{props.label}</button>
     )
 }

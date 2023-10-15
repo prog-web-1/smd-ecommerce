@@ -51,13 +51,15 @@ export function Popover(props: IPopoverProps) {
 
     function handleClickOutside(e: MouseEvent) {
         const elem = document.getElementById(`gear-${props.control}`) as HTMLElement
-        if(!elem.contains(e.target as Node)) {
+        if(elem && !elem.contains(e.target as Node)) {
             setShowPopover(false)
         }
     }
 
     useEffect(()=>{
         window.addEventListener('click', handleClickOutside, false)
+
+        return window.removeEventListener("click", handleClickOutside, false)
     }, [])
 
     

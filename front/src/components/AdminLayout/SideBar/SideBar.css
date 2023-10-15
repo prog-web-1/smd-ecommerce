@@ -49,6 +49,7 @@
     width: 100%;
     cursor: pointer;
     color: #6a6a6a;
+    text-decoration: none;
 }
 
 .side-bar-item-active {
@@ -59,6 +60,7 @@
     cursor: pointer;
     color: #6A5ACD;
     border-right: 5px solid #6A5ACD;
+    text-decoration: none;
 }
 
 .side-bar-item:hover {

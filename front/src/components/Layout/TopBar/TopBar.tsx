@@ -3,9 +3,11 @@ import { FaSearch, FaFilter } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import Popover from "@material-ui/core/Popover";
-import { useState } from "react";
-import { openLoginModal } from "../ModalsProvider";
+import { useEffect, useState } from "react";
+import { openLoginModal, openProfileModal } from "../ModalsProvider";
 import { testUrl } from "../../../tools/testUrl";
+import { Link } from "react-router-dom";
+import { logout } from "../../../tools/logout";
 
 import "./TopBar.css";
 
@@ -22,19 +24,83 @@ const categories = [
 export default function TopBar() {
     const [filterEl, setFilterEl] = useState<HTMLElement | null>(null);
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
+    const [userEl, setUserEl] = useState<HTMLElement | null>(null);
+    const [userPopoverIsOpen, setUserPopoverIsOpen] = useState(false);
     const [shoppingCartEl, setShoppingCartEl] = useState<HTMLElement | null>(null);
     const [shoppingCartIsOpen, setShoppingCartIsOpen] = useState(false);
     const [shoppingCartCount, setShoppingCartCount] = useState(10);
+    const [userIsAuth, setUserIsAuth] = useState(false);
+
+    useEffect(()=>{
+        const user = localStorage.getItem("user");
+
+        if(user) {
+            setUserIsAuth(true);
+        }
+    }, [])
 
     return (
         <div className="top-bar">
             {testUrl("admin") ?
                     <div className="top-bar-container-admin">
-                        <div className="top-bar-logo" onClick={()=>{ window.location.pathname = "home" }}>SMD Express</div>
+                        <Link className="top-bar-logo" to={"/admin/products"}>SMD Express</Link>
+                        <div className="top-bar-icon-container">
+                            <CgProfile 
+                                className="top-bar-icon" 
+                                onClick={(e)=>{
+                                    if(userIsAuth) {
+                                        setUserEl(e.currentTarget as unknown as HTMLElement);
+                                        setUserPopoverIsOpen(!userPopoverIsOpen);
+                                    } else {
+                                        openLoginModal();
+                                    }
+                                }} 
+                            />
+                            <Popover
+                                className="top-bar-filter-popover"
+                                anchorEl={userEl}
+                                open={userPopoverIsOpen}
+                                id={userPopoverIsOpen ? "user-popup-popover" : undefined}
+                                onClose={() => {
+                                    setUserEl(null);
+                                    setUserPopoverIsOpen(false);
+                                }}
+                                transformOrigin={{
+                                    horizontal: "left",
+                                    vertical: "top",
+                                }}
+                                anchorOrigin={{
+                                    horizontal: "left",
+                                    vertical: "bottom",
+                                }}
+                            >
+                                <div className="top-bar-shopping-cart-link-container">
+                                    <div className="top-bar-shopping-cart-link" 
+                                        onClick={()=>{ 
+                                            openProfileModal();
+                                            setUserEl(null);
+                                            setUserPopoverIsOpen(false);
+                                        }}
+                                    >
+                                        Meu perfil
+                                    </div>
+                                </div>
+                                <div className="top-bar-shopping-cart-link-container">
+                                    <div 
+                                    className="top-bar-shopping-cart-link" 
+                                        onClick={()=>{ 
+                                            logout();
+                                        }}
+                                    >
+                                        Sair
+                                    </div>
+                                </div>
+                            </Popover>
+                        </div>
                     </div>
                 :
                     <div className="top-bar-container">
-                        <div className="top-bar-logo" onClick={()=>{ window.location.pathname = "home" }}>SMD Express</div>
+                        <Link className="top-bar-logo" to={"/home" }>SMD Express</Link>
                         <form
                             className="top-bar-form"
                             onSubmit={(e)=>{
@@ -128,18 +194,69 @@ export default function TopBar() {
                                     }}
                                 >
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <div className="top-bar-shopping-cart-link" onClick={()=>{ window.location.pathname = "shopping_cart" }}>{`Meu carrinho (${shoppingCartCount})`}</div>
+                                        <Link className="top-bar-shopping-cart-link" to={"shopping_cart" }>{`Meu carrinho (${shoppingCartCount})`}</Link>
                                     </div>
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <div className="top-bar-shopping-cart-link" onClick={()=>{ window.location.pathname = "shopping_history" }}>Histórico de compras</div>
+                                        <Link className="top-bar-shopping-cart-link" to={"shopping_history"}>Histórico de compras</Link>
                                     </div>
                                 </Popover>
                             </div>
                             <div className="top-bar-icon-container">
-                                <CgProfile className="top-bar-icon" onClick={()=>{openLoginModal()}} />
+                                <CgProfile 
+                                    className="top-bar-icon" 
+                                    onClick={(e)=>{
+                                        if(userIsAuth) {
+                                            setUserEl(e.currentTarget as unknown as HTMLElement);
+                                            setUserPopoverIsOpen(!userPopoverIsOpen);
+                                        } else {
+                                            openLoginModal();
+                                        }
+                                    }} 
+                                />
+                                <Popover
+                                    className="top-bar-filter-popover"
+                                    anchorEl={userEl}
+                                    open={userPopoverIsOpen}
+                                    id={userPopoverIsOpen ? "user-popup-popover" : undefined}
+                                    onClose={() => {
+                                        setUserEl(null);
+                                        setUserPopoverIsOpen(false);
+                                    }}
+                                    transformOrigin={{
+                                        horizontal: "left",
+                                        vertical: "top",
+                                    }}
+                                    anchorOrigin={{
+                                        horizontal: "left",
+                                        vertical: "bottom",
+                                    }}
+                                >
+                                    <div className="top-bar-shopping-cart-link-container">
+                                        <div 
+                                            className="top-bar-shopping-cart-link" 
+                                            onClick={()=>{ 
+                                                openProfileModal();
+                                                setUserEl(null);
+                                                setUserPopoverIsOpen(false);
+                                            }}
+                                        >
+                                            Meu perfil
+                                        </div>
+                                    </div>
+                                    <div className="top-bar-shopping-cart-link-container">
+                                        <div 
+                                            className="top-bar-shopping-cart-link" 
+                                            onClick={()=>{ 
+                                                logout();
+                                            }}
+                                        >
+                                            Sair
+                                        </div>
+                                    </div>
+                                </Popover>
                             </div>
-                        </div>
                     </div>
+                </div>
             }
         </div>
     )

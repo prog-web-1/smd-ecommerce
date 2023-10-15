@@ -13,21 +13,25 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import Layout from "../components/Layout/Layout";
+import AdminLogin from "../pages/AdminLogin/AdminLogin";
 
 function Router() {
+    const userIsAuth = localStorage.getItem("admin")
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="home" element={<Home/>}/>
-                <Route path="product/:id" element={<Product/>}/>
-                <Route path="shopping_history" element={<ShoppingHistory/>}/>
-                <Route path="shopping_cart" element={<ShoppingCart/>}/>
-                <Route path="search_products" element={<SearchProducts/>}/>
-                <Route path="admin/categories" element={<AdminLayout><AdminCategories/></AdminLayout>}/>
-                <Route path="admin/products" element={<AdminLayout><AdminProducts/></AdminLayout>}/>
-                <Route path="admin/purchases" element={<AdminLayout><AdminPurchases/></AdminLayout>}/>
-                <Route path="admin/reports" element={<AdminLayout><AdminReports/></AdminLayout>}/>
+                <Route path="/" element={<Layout><Home/></Layout>}/>
+                <Route path="home" element={<Layout><Home/></Layout>}/>
+                <Route path="product/:id" element={<Layout><Product/></Layout>}/>
+                <Route path="shopping_history" element={<Layout><ShoppingHistory/></Layout>}/>
+                <Route path="shopping_cart" element={<Layout><ShoppingCart/></Layout>}/>
+                <Route path="search_products" element={<Layout><SearchProducts/></Layout>}/>
+                <Route path="admin/categories" element={userIsAuth ? <Layout><AdminLayout><AdminCategories/></AdminLayout></Layout> : <AdminLogin/>}/>
+                <Route path="admin/products" element={userIsAuth ? <Layout><AdminLayout><AdminProducts/></AdminLayout></Layout> : <AdminLogin/>}/>
+                <Route path="admin/purchases" element={userIsAuth ? <Layout><AdminLayout><AdminPurchases/></AdminLayout></Layout> : <AdminLogin/>}/>
+                <Route path="admin/reports" element={userIsAuth ? <Layout><AdminLayout><AdminReports/></AdminLayout></Layout> : <AdminLogin/>}/>
             </Routes>
         </BrowserRouter>
     )

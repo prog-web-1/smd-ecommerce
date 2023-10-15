@@ -1,4 +1,4 @@
-export default function logout() {
+export function logout() {
     localStorage.clear();
-    window.location.pathname = "/";
+    window.location.reload();
 }
