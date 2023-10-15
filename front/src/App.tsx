@@ -1,4 +1,3 @@
-import Layout from './components/Layout/Layout';
 import Router from './routes/routes';
 import 'moment/locale/pt-br';
 
@@ -8,9 +7,7 @@ import './App.css';
 
 function App() {
   return (
-    <Layout>
-      <Router/>
-    </Layout>
+    <Router/>
   );
 }
 

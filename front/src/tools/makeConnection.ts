@@ -3,7 +3,7 @@ import { alertError } from "../components/Alert/Alert";
 import { closeLoader, openLoader } from "../components/Loader/Loader";
 
 interface IMakeConnectionProps {
-    method: "get" | "post" | "put" | "delete",
+    method: "get" | "post" | "put" | "delete" | "patch",
     suffix: string,
     entityId?: string,
     body?: Record<string, unknown>,
@@ -24,18 +24,21 @@ export async function makeConnection(props: IMakeConnectionProps) {
     try {
         response = await connectToServer(api, url, props.method, body);
     } catch(err) {
-        const error = err as {
-            response: {
-              data: {
-                error: string
-              }
-            }
+        const error = (err as {response: {data: Record<string, unknown>}}).response.data as {
+            error: string;
+            statusCode: number,
+            message: string[] | string,
         }
-        if(error.response.data.error === "Unauthorized"){
+
+        if(Array.isArray(error.message)) {
+            error.message = error.message[0];
+        }
+        
+        if(error.statusCode === 401 && !error.message){
             localStorage.clear();
             window.location.reload();
         } else {
-            alertError(error.response.data.error);
+            alertError(error.message);
         }    
     }
 
@@ -49,7 +52,7 @@ function generateHeader() {
     const token = localStorage.getItem("token")
 
     if(token) {
-        headers.authorization = token
+        headers.authorization = "Bearer " + token
     }
 
     return headers;
@@ -101,6 +104,9 @@ async function connectToServer(api: AxiosInstance, url: string, method: string, 
         case "delete":
             response = await _delete(api, url, body)
             break;
+        case "patch":
+            response = await _patch(api, url, body)
+            break;
     }
 
     return response;
@@ -123,5 +129,10 @@ async function _put(api: AxiosInstance, url: string,  body?: Record<string, unkn
 
 async function _delete(api: AxiosInstance, url: string,  body?: Record<string, unknown>) {
     const response = await api.delete(url, body);
+    return response;
+}
+
+async function _patch(api: AxiosInstance, url: string,  body?: Record<string, unknown>) {
+    const response = await api.patch(url, body);
     return response;
 }

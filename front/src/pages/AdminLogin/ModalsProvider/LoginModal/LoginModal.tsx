@@ -1,20 +1,14 @@
 import { useState } from "react";
-import FormGroup from "../../../components/FormGroup/FormGroup";
-import { EmptyModal } from "../../EmptyModal/EmptyModal";
-import { LabelButton } from "../../LabelButton/LabelButton";
-import { validateAllInputs } from "../../../tools/validateInputs";
 import { loginRequest } from "./requests";
-import { alertError, alertSuccess } from "../../Alert/Alert";
+import { EmptyModal } from "../../../../components/EmptyModal/EmptyModal";
+import FormGroup from "../../../../components/FormGroup/FormGroup";
+import { LabelButton } from "../../../../components/LabelButton/LabelButton";
+import { validateAllInputs } from "../../../../tools/validateInputs";
+import { alertError, alertSuccess } from "../../../../components/Alert/Alert";
 
 import "./LoginModal.css";
 
-interface ILoginModalProps {
-    showModal: boolean;
-    closeModal: ()=>void;
-    openRegisterModal: ()=>void;
-}
-
-export function LoginModal(props: ILoginModalProps) {
+export function LoginModal() {
     const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
     const [entity, setEntity] = useState<Record<string, unknown>>({});
     const fieldsValidations = {
@@ -26,12 +20,12 @@ export function LoginModal(props: ILoginModalProps) {
         <>
             <EmptyModal
                 titleLabel={"Login"}
-                showModal={props.showModal}
-                closeModal={props.closeModal}
+                showModal={true}
+                closeModal={()=>{/* */}}
                 customWidth="400px"
                 body={
                     <div>
-                        <FormGroup 
+                        <FormGroup
                             id="login" 
                             type="text" 
                             size="100" 
@@ -67,16 +61,7 @@ export function LoginModal(props: ILoginModalProps) {
                             }}
                             errorMessage={errorMessages && errorMessages.password ? errorMessages.password : ""}
                         />
-                        <div style={{marginTop: "20px", display: "flex"}}>
-                            <LabelButton 
-                                label="Cadastre-se"  
-                                extraClass="form-login-button" 
-                                isSecondary={true} 
-                                callback={()=>{
-                                    props.openRegisterModal();
-                                    props.closeModal();
-                                }}
-                            />
+                        <div style={{marginTop: "20px", display: "flex", justifyContent: "flex-end"}}>
                             <LabelButton
                                 label="Entrar"  
                                 extraClass="form-login-button" 
@@ -91,21 +76,26 @@ export function LoginModal(props: ILoginModalProps) {
                                         });
 
                                         if(response.success) {
-                                            const user = {
-                                                email: response.data.email,
-                                                endereco: response.data.endereco,
-                                                login: response.data.login,
-                                                nome: response.data.nome,
-                                            };
+                                            if(response.data.administrador === true) {
+                                                const user = {
+                                                    email: response.data.email,
+                                                    endereco: response.data.endereco,
+                                                    login: response.data.login,
+                                                    nome: response.data.nome,
+                                                };
 
-                                            localStorage.setItem("token", response.data.access_token as string);
-                                            localStorage.setItem("user", JSON.stringify(user));
+                                                localStorage.setItem("token", response.data.access_token as string);
+                                                localStorage.setItem("admin", JSON.stringify(user));
+                                                localStorage.setItem("user", JSON.stringify(user));
 
-                                            alertSuccess("Login efetuado com sucesso!");
+                                                alertSuccess("Login efetuado com sucesso!");
 
-                                            setTimeout(()=>{
-                                                window.location.reload();
-                                            }, 500)
+                                                setTimeout(()=>{
+                                                    window.location.reload();
+                                                }, 500)
+                                            } else {
+                                                alertError("Usuário não autorizado.")
+                                            }
                                         }
                                     } else {
                                         alertError("Um ou mais campos não estão corretamente preenchidos.")
