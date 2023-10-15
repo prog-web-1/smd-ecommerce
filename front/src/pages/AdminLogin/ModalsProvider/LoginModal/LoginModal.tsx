@@ -76,22 +76,26 @@ export function LoginModal() {
                                         });
 
                                         if(response.success) {
-                                            const user = {
-                                                email: response.data.email,
-                                                endereco: response.data.endereco,
-                                                login: response.data.login,
-                                                nome: response.data.nome,
-                                            };
+                                            if(response.data.administrador === true) {
+                                                const user = {
+                                                    email: response.data.email,
+                                                    endereco: response.data.endereco,
+                                                    login: response.data.login,
+                                                    nome: response.data.nome,
+                                                };
 
-                                            localStorage.setItem("token", response.data.access_token as string);
-                                            localStorage.setItem("admin", JSON.stringify(user));
-                                            localStorage.setItem("user", JSON.stringify(user));
+                                                localStorage.setItem("token", response.data.access_token as string);
+                                                localStorage.setItem("admin", JSON.stringify(user));
+                                                localStorage.setItem("user", JSON.stringify(user));
 
-                                            alertSuccess("Login efetuado com sucesso!");
+                                                alertSuccess("Login efetuado com sucesso!");
 
-                                            setTimeout(()=>{
-                                                window.location.reload();
-                                            }, 500)
+                                                setTimeout(()=>{
+                                                    window.location.reload();
+                                                }, 500)
+                                            } else {
+                                                alertError("Usuário não autorizado.")
+                                            }
                                         }
                                     } else {
                                         alertError("Um ou mais campos não estão corretamente preenchidos.")
