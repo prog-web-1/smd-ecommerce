@@ -4,7 +4,6 @@ import {
   IsPositive,
   ValidateNested,
 } from 'class-validator';
-import { isExists } from '../../validators/exists';
 import { Product } from '../../product/entities/product.entity';
 import { Type } from 'class-transformer';
 
@@ -20,6 +19,5 @@ export class CreateVendaProdutoDto {
 
 class ProdutoDto {
   @IsNumber()
-  @isExists({ tableName: 'produto', column: 'id' })
   id: number;
 }
