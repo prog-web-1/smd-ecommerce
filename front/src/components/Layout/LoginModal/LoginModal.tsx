@@ -73,6 +73,7 @@ export function LoginModal(props: ILoginModalProps) {
                                 extraClass="form-login-button" 
                                 isSecondary={true} 
                                 callback={()=>{
+                                    props.openRegisterModal();
                                     props.closeModal();
                                 }}
                             />
