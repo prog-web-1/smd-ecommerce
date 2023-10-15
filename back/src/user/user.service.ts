@@ -21,15 +21,15 @@ export class UserService extends BaseService<
     super(userRepository);
   }
 
-  create(createUserDto: CreateUserDto) {
-    createUserDto.senha = bcrypt.hashSync(createUserDto.senha, 10);
-    return super.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    createUserDto.senha = await bcrypt.hash(createUserDto.senha, 10);
+    return await super.create(createUserDto);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     if (updateUserDto.senha)
-      updateUserDto.senha = bcrypt.hashSync(updateUserDto.senha, 10);
-    return super.update(id, updateUserDto);
+      updateUserDto.senha = await bcrypt.hash(updateUserDto.senha, 10);
+    return await super.update(id, updateUserDto);
   }
 
   findAll(filter: UserFilter) {
