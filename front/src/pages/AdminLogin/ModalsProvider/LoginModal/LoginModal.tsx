@@ -91,7 +91,7 @@ export function LoginModal() {
                                                 alertSuccess("Login efetuado com sucesso!");
 
                                                 setTimeout(()=>{
-                                                    window.location.reload();
+                                                    window.location.pathname = "/admin/reports";
                                                 }, 500)
                                             } else {
                                                 alertError("Usuário não autorizado.")

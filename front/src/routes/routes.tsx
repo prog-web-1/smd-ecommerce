@@ -32,6 +32,7 @@ function Router() {
                 <Route path="admin/products" element={userIsAuth ? <Layout><AdminLayout><AdminProducts/></AdminLayout></Layout> : <AdminLogin/>}/>
                 <Route path="admin/purchases" element={userIsAuth ? <Layout><AdminLayout><AdminPurchases/></AdminLayout></Layout> : <AdminLogin/>}/>
                 <Route path="admin/reports" element={userIsAuth ? <Layout><AdminLayout><AdminReports/></AdminLayout></Layout> : <AdminLogin/>}/>
+                <Route path="admin" element={userIsAuth ? <Layout><AdminLayout><AdminReports/></AdminLayout></Layout> : <AdminLogin/>}/>
             </Routes>
         </BrowserRouter>
     )

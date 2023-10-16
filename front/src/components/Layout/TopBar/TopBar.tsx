@@ -43,7 +43,7 @@ export default function TopBar() {
         <div className="top-bar">
             {testUrl("admin") ?
                     <div className="top-bar-container-admin">
-                        <Link className="top-bar-logo" to={"/admin/products"}>SMD Express</Link>
+                        <Link className="top-bar-logo" to={"/admin/reports"}>SMD Express</Link>
                         <div className="top-bar-icon-container">
                             <CgProfile 
                                 className="top-bar-icon" 

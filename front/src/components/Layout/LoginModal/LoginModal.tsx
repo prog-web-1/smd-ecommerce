@@ -104,7 +104,12 @@ export function LoginModal(props: ILoginModalProps) {
                                             alertSuccess("Login efetuado com sucesso!");
 
                                             setTimeout(()=>{
-                                                window.location.reload();
+                                                if(response.data.administrador === true) {
+                                                    localStorage.setItem("admin", JSON.stringify(user));
+                                                    window.location.pathname = "/admin/reports";
+                                                } else {
+                                                    window.location.reload();
+                                                }
                                             }, 500)
                                         }
                                     } else {
