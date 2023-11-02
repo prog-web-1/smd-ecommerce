@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
 import { VendaProduto } from '../../venda/entities/venda-produto.entity';
+import { ColumnNumericTransformer } from '../../utils/columnFloatTransformer';
 
 @Entity({ name: 'produto' })
 export class Product {
@@ -16,7 +17,11 @@ export class Product {
   nome: string;
   @Column()
   descricao: string;
-  @Column()
+  @Column('decimal', {
+    precision: 6,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   preco: number;
   @Column({
     length: 10485760,
