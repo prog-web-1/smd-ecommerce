@@ -18,7 +18,9 @@ export class Product {
   descricao: string;
   @Column()
   preco: number;
-  @Column()
+  @Column({
+    length: 1024 * 1024 * 20,
+  })
   foto: string;
   @Column()
   quantidade: number;

@@ -5,6 +5,7 @@ import { useContainer } from 'class-validator';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './validators/exception-filter';
 import { HttpAdapterHost } from '@nestjs/core';
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +40,8 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+
+  app.use(express.json({ limit: '20mb' }));
 
   await app.listen(4000);
 }
