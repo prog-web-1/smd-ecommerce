@@ -19,7 +19,7 @@ export class Product {
   @Column()
   preco: number;
   @Column({
-    length: 1024 * 1024 * 20,
+    length: 10485760,
   })
   foto: string;
   @Column()

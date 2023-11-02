@@ -41,7 +41,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-  app.use(express.json({ limit: '20mb' }));
+  app.use(express.json({ limit: '10mb' }));
 
   await app.listen(4000);
 }
