@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import AdminLogin from "../pages/AdminLogin/AdminLogin";
+import AdminUsers from "../pages/AdminUsers/AdminUsers";
 
 function Router() {
     const userIsAuth = localStorage.getItem("admin")
@@ -33,6 +34,7 @@ function Router() {
                 <Route path="admin/purchases" element={userIsAuth ? <Layout><AdminLayout><AdminPurchases/></AdminLayout></Layout> : <AdminLogin/>}/>
                 <Route path="admin/reports" element={userIsAuth ? <Layout><AdminLayout><AdminReports/></AdminLayout></Layout> : <AdminLogin/>}/>
                 <Route path="admin" element={userIsAuth ? <Layout><AdminLayout><AdminReports/></AdminLayout></Layout> : <AdminLogin/>}/>
+                <Route path="admin/users" element={userIsAuth ? <Layout><AdminLayout><AdminUsers/></AdminLayout></Layout> : <AdminLogin/>}/>
             </Routes>
         </BrowserRouter>
     )

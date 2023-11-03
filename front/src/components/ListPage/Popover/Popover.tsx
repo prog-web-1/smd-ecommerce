@@ -58,8 +58,6 @@ export function Popover(props: IPopoverProps) {
 
     useEffect(()=>{
         window.addEventListener('click', handleClickOutside, false)
-
-        return window.removeEventListener("click", handleClickOutside, false)
     }, [])
 
     

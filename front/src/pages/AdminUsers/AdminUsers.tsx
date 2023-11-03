@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { ListPage } from "../../components/ListPage/ListPage";
 import { getColumns } from "./getColumns";
+import { getUsers } from "./requests";
 import { ModalsProvider, openSaveModal } from "./ModalsProvider/ModalsProvider";
-import { getProducts } from "./requests";
 
 export let updateEntities: ()=>void;
 
-export default function AdminProducts() {
+export default function AdminUsers() {
     const [entities, setEntities] = useState<Record<string, unknown>[]>([]);
     const [total, setTotal] = useState(1);
     const [offset, setOffset] = useState(0);
@@ -17,14 +17,14 @@ export default function AdminProducts() {
     });
     
     updateEntities = ()=>{
-        getProducts({offset, filters}).then(result=>{
+        getUsers({offset, filters}).then(result=>{
             setEntities(result.data)
             setTotal(result.total)
         })
     }
 
     useEffect(()=>{
-        getProducts({offset, filters}).then(result=>{
+        getUsers({offset, filters}).then(result=>{
             setEntities(result.data)
             setTotal(result.total)
         })
@@ -32,10 +32,10 @@ export default function AdminProducts() {
 
     return (
         <div>
-            <ModalsProvider/>
+            {<ModalsProvider/>}
             <ListPage
-                title={"Produtos"}
-                titleButtonLabel={"Nova Produto"}
+                title={"Usuários"}
+                titleButtonLabel={"Novo Usuário"}
                 titleButtonCallback={()=>{openSaveModal()}}
                 entities={entities}
                 columns={getColumns()}

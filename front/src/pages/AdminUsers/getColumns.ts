@@ -26,15 +26,21 @@ export function getColumns() {
         },
         {
             type: "string",
-            label: "Preço",
-            control: "precoString",
-            orderControl: "preco",
+            label: "Login",
+            control: "login",
+            orderControl: "login",
         },
         {
             type: "string",
-            label: "Estoque",
-            control: "quantidade",
-            orderControl: "quantidade",
+            label: "Email",
+            control: "email",
+            orderControl: "email",
+        },
+        {
+            type: "string",
+            label: "Endereço",
+            control: "endereco",
+            orderControl: "endereco",
         },
         {
             type: "action",

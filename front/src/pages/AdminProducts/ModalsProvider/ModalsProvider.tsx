@@ -6,6 +6,7 @@ import { validateAllInputs } from "../../../tools/validateInputs";
 //import { createEntity, deleteEntity, editEntity, finalizarTurma, getDisciplinas, getStudents, getTeachers } from "../requester";
 import { fieldValidations, getSaveModalFields } from "./getSaveModalFields";
 import { updateEntities } from "../AdminProducts";
+import { createProduct, deleteProduct, editProduct, getCategoriesOptions } from "./requests";
 
 export let openSaveModal:(targetEntity?: Record<string, unknown>)=>void;
 export let openDeleteModal:(targetEntity: Record<string, unknown>)=>void;
@@ -17,6 +18,16 @@ export function ModalsProvider() {
     const [entity, setEntity] = useState<Record<string, unknown>>({});
     const [isEdit, setIsEdit] = useState(false);
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+    const [categoriesOptions, setCategoriesOptions] = useState<{
+        value: string;
+        label: string;
+    }[]>([]);
+
+    useEffect(()=>{
+        getCategoriesOptions().then(options=>{
+            setCategoriesOptions(options);
+        })
+    }, [])
 
     openSaveModal = (targetEntity?: Record<string, unknown>)=>{ 
         if(targetEntity){
@@ -24,7 +35,14 @@ export function ModalsProvider() {
                 setIsEdit(true);
             } 
             setTargetEntity({...targetEntity}); 
-            setEntity({...targetEntity});
+            setEntity({
+                nome: targetEntity.nome,
+                foto: targetEntity.foto,
+                descricao: targetEntity.descricao,
+                quantidade: targetEntity.quantidade,
+                preco: targetEntity.preco,
+                category: {id: (targetEntity.category as Record<string, unknown>).id},
+            });
         } else {
             setIsEdit(false);
         }
@@ -49,7 +67,7 @@ export function ModalsProvider() {
                             getSaveModalFields({
                                 initialEntity: targetEntity, 
                                 errorMessages, 
-                                onChange: (field: string, value: string | Date | string[] )=>{
+                                onChange: (field: string, value: string | Date | string[] | number | Record<string, unknown>)=>{
                                     const newEntity = {...entity}
                                     newEntity[field] = value;
                                     setEntity(newEntity);
@@ -59,6 +77,7 @@ export function ModalsProvider() {
                                     newValidation[field] = value;
                                     setErrorMessages(newValidation);
                                 },
+                                categoriesOptions: categoriesOptions,
                             })
                         }
                         footerButtons={[
@@ -78,9 +97,9 @@ export function ModalsProvider() {
                                     const validationResult = validateAllInputs({entity, validations});
                                     if(validationResult.success) {
                                         if(isEdit) {
-                                            const success = true;//await editEntity(entity, targetEntity._id as string);
+                                            const success = await editProduct({entity, id: targetEntity.id as string});
                                             if(success) {
-                                                alertSuccess("Categoria editada com sucesso.");
+                                                alertSuccess("Produto editado com sucesso.");
                                                 setEntity({});
                                                 setTargetEntity({});
                                                 setIsOpenSaveModal(false); 
@@ -88,9 +107,9 @@ export function ModalsProvider() {
                                                 updateEntities();
                                             }
                                         } else {
-                                            const success = true;//await createEntity(entity);
+                                            const success = await createProduct({entity});
                                             if(success) {
-                                                alertSuccess("Categoria criada com sucesso.");
+                                                alertSuccess("Produto criado com sucesso.");
                                                 setEntity({});
                                                 setTargetEntity({});
                                                 setIsOpenSaveModal(false); 
@@ -113,11 +132,14 @@ export function ModalsProvider() {
                         titleLabel={"Remover Produto"}
                         showModal={isOpenDeleteModal}
                         closeModal={()=>{setIsOpenDeleteModal(false)}}
-                        callback={()=>{
-                            //deleteEntity(targetEntity._id as string);
-                            setIsOpenDeleteModal(false);
-                            setTargetEntity({});
-                            updateEntities();
+                        callback={async ()=>{
+                            const success = await deleteProduct(targetEntity.id as string);
+                            if(success) {
+                                alertSuccess("Produto removida com sucesso.")
+                                setIsOpenDeleteModal(false);
+                                setTargetEntity({});
+                                updateEntities();
+                            }
                         }}
                         bodyLabel={"Essa ação irá remover o produto."}
                     />

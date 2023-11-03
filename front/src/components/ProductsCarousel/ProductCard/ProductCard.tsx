@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
 
 interface IProductCardProps {
-    id: string;
+    id: number;
     name: string;
     description: string;
     stock: number,

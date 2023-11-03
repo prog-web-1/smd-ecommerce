@@ -56,8 +56,8 @@ interface IAction {
 
 export function ListPage(props: IListPageProps) {
     const [filters, setFilters] = useState<Record<string, unknown>>({});
-    const [order, setOrder] = useState("asc");
-    const [sort, setSort] = useState("name");
+    const [order, setOrder] = useState("nome");
+    const [sort, setSort] = useState("ASC");
 
     useEffect(()=>{
         if(props.defaultFilter) {
@@ -184,24 +184,25 @@ export function ListPage(props: IListPageProps) {
                                     onClick={()=>{
                                         if(props.filtersSearchCallBack && column.orderControl) {
                                             const filter = {...filters};
-                                            filter.sort = column.orderControl;
-                                            
-                                            if(sort !== column.orderControl) {
-                                                filter.order = "asc";
+                                            filter.order = column.orderControl;
+
+                                            if(order !== column.orderControl) {
+                                                filter.sort = "ASC";
                                             } else {
-                                                if(order === "asc") {
-                                                    filter.order = "desc";
+                                                if(sort === "ASC") {
+                                                    filter.sort = "DESC";
                                                 } else {
-                                                    filter.order = "asc";
+                                                    filter.sort = "ASC";
                                                 }
                                             }
+                                          
                                             setOrder(filter.order as string);
                                             setSort(filter.sort as string);
                                             props.filtersSearchCallBack(filter);
                                         }
                                     }}
                                 >
-                                    {`${column.label}${column.orderControl === sort ? order === "asc" ? " ▲" : " ▼" : ""}`}
+                                    {`${column.label}${column.orderControl === order ? sort === "ASC" ? " ▲" : " ▼" : ""}`}
                                 </th>
                             )
                         })

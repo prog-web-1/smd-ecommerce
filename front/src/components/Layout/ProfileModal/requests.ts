@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { makeConnection } from "../../../tools/makeConnection";
 
 interface IEditProfileProps {
@@ -27,9 +26,9 @@ export async function editProfile(props: IEditProfileProps) {
     let data = {} as Record<string, unknown>;
 
     try {
-        const response = await makeConnection({method, suffix, body}) as AxiosResponse<any, any>;
-        data = response.data;
-        success = true;
+        const response = await makeConnection({method, suffix, body});
+        data = response.data as Record<string, unknown>;
+        success = response.success;
     } catch (err) {
         console.error(err);
     }
@@ -47,8 +46,9 @@ export async function getUserData() {
     let data = {} as Record<string, unknown>;
 
     try {
-        const response = await makeConnection({method, suffix}) as AxiosResponse<any, any>;
-        data = response.data;
+        const response = await makeConnection({method, suffix});
+        data = response.data as Record<string, unknown>;
+        success = response.success;
     } catch (err) {
         console.error(err);
     }
