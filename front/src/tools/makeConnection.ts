@@ -13,6 +13,7 @@ interface IMakeConnectionProps {
     entityId?: string,
     body?: Record<string, unknown>,
     otherQueryStrings?: Record<string, unknown>,
+    silent?: boolean,
 }
 
 export async function makeConnection(props: IMakeConnectionProps) {
@@ -24,7 +25,9 @@ export async function makeConnection(props: IMakeConnectionProps) {
     const body = props.body ? props.body : {};
     let response: IResponse; 
 
-    openLoader();
+    if(!props.silent) {
+        openLoader();
+    }
 
     try {
         const serverResponse = await connectToServer(api, url, props.method, body)
@@ -44,7 +47,9 @@ export async function makeConnection(props: IMakeConnectionProps) {
         }
         
         if(error.statusCode === 401 && error.message === "Unauthorized"){
-            localStorage.clear();
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            localStorage.removeItem("expire_token");
             window.location.reload();
         } else {
             alertError(error.message);
@@ -56,7 +61,9 @@ export async function makeConnection(props: IMakeConnectionProps) {
         }
     }
 
-    closeLoader();
+    if(!props.silent) {
+        closeLoader();
+    }
 
     return response;
 }

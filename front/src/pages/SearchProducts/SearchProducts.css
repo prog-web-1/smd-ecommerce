@@ -7,3 +7,11 @@
 .search_product_page .product-card {
     margin-bottom: 10px;
 }
+
+.search_product_page_no-data-container {
+    height: 500px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

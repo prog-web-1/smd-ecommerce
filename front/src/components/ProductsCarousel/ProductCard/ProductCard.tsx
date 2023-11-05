@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./ProductCard.css";
+import { addItemToCart } from "../../../tools/shoppingCartFunctions";
 
 interface IProductCardProps {
     id: number;
@@ -60,7 +61,9 @@ export function ProductCard(props: IProductCardProps) {
                         <div style={{width: "100px"}}>
                             <LabelButton
                                 label="Comprar"
-                                callback={()=>{console.log("oi")}}
+                                callback={()=>{
+                                    addItemToCart({id: props.id, name: props.name, quantity: count}, props.stock);
+                                }}
                             />
                         </div>
                     </div>

@@ -1,20 +1,9 @@
 import PageContainer from "../../components/PageContainer/PageContainer";
 import { useEffect, useState } from "react";
 import ProductsCarousel, { ProductStock } from "../../components/ProductsCarousel/ProductsCarousel";
-
-import "./Home.css";
 import { homeRequest } from "./requests";
 
-const data = [
-    {
-        id: "1",
-        name: "Sapato",
-        description: "Um sapato muito bonito",
-        stock: 3,
-        price: 15.20,
-        image: "https://media.istockphoto.com/id/685779142/pt/foto/red-tshirt-clothes.jpg?s=1024x1024&w=is&k=20&c=ucA-J_IS2avss1xgGo7Ms_CFRQE6Aw0T0jkQPaSVmrs="
-    },
-];
+import "./Home.css";
 
 export default function Home() {
     const [categories, setCategories] = useState<{name: string, products: ProductStock[]}[]>([]);

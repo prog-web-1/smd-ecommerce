@@ -97,9 +97,12 @@ export function LoginModal(props: ILoginModalProps) {
                                                 login: response.data.login,
                                                 nome: response.data.nome,
                                             };
+                                            const tokenExpireDate = new Date();
+                                            tokenExpireDate.setDate(tokenExpireDate.getDate() + 1);
 
                                             localStorage.setItem("token", response.data.access_token as string);
                                             localStorage.setItem("user", JSON.stringify(user));
+                                            localStorage.setItem("expire_token", JSON.stringify(tokenExpireDate));
 
                                             alertSuccess("Login efetuado com sucesso!");
 

@@ -18,7 +18,7 @@ export async function loginRequest(props: ILoginRequestProps) {
     try {
         const response = await makeConnection({method, suffix, body});
         data = response.data as Record<string, unknown>;
-        success = true;
+        success = response.success;
     } catch (err) {
         console.error(err);
     }

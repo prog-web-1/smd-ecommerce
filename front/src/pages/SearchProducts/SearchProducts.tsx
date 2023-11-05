@@ -31,18 +31,24 @@ export default function SearchProducts() {
     return (
         <PageContainer>
             <div className="search_product_page">
-                {products.map(product=>{
-                    return (
-                        <ProductCard
-                            id={product.id as number}
-                            name={product.name as string}
-                            description={product.description as string}
-                            stock={product.stock as number}
-                            price={product.price as number}
-                            image={product.image as string}
-                        />
-                    )
-                })}
+                { products.length > 0 ? 
+                    <div>
+                        {products.map(product=>{
+                            return (
+                                <ProductCard
+                                    id={product.id as number}
+                                    name={product.name as string}
+                                    description={product.description as string}
+                                    stock={product.stock as number}
+                                    price={product.price as number}
+                                    image={product.image as string}
+                                />
+                            )
+                        })}
+                    </div>
+                :
+                    <div className="search_product_page_no-data-container">Nenhum produto encontrado</div>
+                }
             </div>
         </PageContainer>
     )

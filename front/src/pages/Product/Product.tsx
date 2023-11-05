@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import PageContainer from "../../components/PageContainer/PageContainer";
-
-import "./Product.css";
 import { LabelButton } from "../../components/LabelButton/LabelButton";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { getProductById } from "./requests";
+import { addItemToCart } from "../../tools/shoppingCartFunctions";
+
+import "./Product.css";
 
 const data = {
     id: 0,
@@ -76,7 +77,7 @@ export default function Product() {
                                 label="Compre agora"
                                 extraClass="product-details-buy-button" 
                                 callback={()=>{
-                                    console.log("buy")
+                                    addItemToCart({id: product.id, name: product.name, quantity: count}, product.stock);
                                 }}
                             />
                         </div>

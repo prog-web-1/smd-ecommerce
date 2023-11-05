@@ -10,9 +10,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../tools/logout";
 import { openDeleteAccountModal } from "../DeleteAccountModal/DeleteAccountModal";
 import { getCategoriesOptions } from "./requests";
+import { alertError } from "../../Alert/Alert";
 
 import "./TopBar.css";
-import { alertError } from "../../Alert/Alert";
+import { CartItem, getNumberOfItensInCart, validateShoppingCart } from "../../../tools/shoppingCartFunctions";
+
+export let updateShoppingCartCount: (value: number)=>void;
 
 export default function TopBar() {
     const [filterEl, setFilterEl] = useState<HTMLElement | null>(null);
@@ -21,12 +24,42 @@ export default function TopBar() {
     const [userPopoverIsOpen, setUserPopoverIsOpen] = useState(false);
     const [shoppingCartEl, setShoppingCartEl] = useState<HTMLElement | null>(null);
     const [shoppingCartIsOpen, setShoppingCartIsOpen] = useState(false);
-    const [shoppingCartCount, setShoppingCartCount] = useState(10);
+    const [shoppingCartCount, setShoppingCartCount] = useState(0);
     const [userIsAuth, setUserIsAuth] = useState(false);
     const [categories, setCategories] = useState<{value: string, label: string}[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>();
     const [textFilter, setTextFilter] = useState("");
     const navigate = useNavigate();
+
+    updateShoppingCartCount = (value: number)=>{
+        setShoppingCartCount(value);
+    }
+
+    useEffect(()=>{
+        const userToken = localStorage.getItem("token");
+        const userExpireDate = localStorage.getItem("expire_token");
+        
+        if(userToken && userExpireDate && (new Date(JSON.parse(userExpireDate))) < new Date()) {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            localStorage.removeItem("expire_token");
+            window.location.reload();
+        }
+    }, [])
+
+    useEffect(()=>{
+        const localCart = localStorage.getItem("shopping_cart");
+        
+        if(localCart) {
+            const cart = JSON.parse(localCart) as CartItem[];
+            validateShoppingCart(cart, true).then(response=>{
+                const numberOfItens = getNumberOfItensInCart(response.cart);
+                setShoppingCartCount(numberOfItens);
+            })
+        } else {
+            setShoppingCartCount(0);
+        }
+    }, [])
 
     useEffect(()=>{
         const user = localStorage.getItem("user");
@@ -210,7 +243,7 @@ export default function TopBar() {
                         </form>
                         <div className="top-bar-buttons-container">
                             <div className="top-bar-icon-container">
-                                {shoppingCartCount && <div className="top-bar-shopping-cart-count">{shoppingCartCount}</div>}
+                                {shoppingCartCount ? <div className="top-bar-shopping-cart-count">{shoppingCartCount}</div> : ""}
                                 <AiOutlineShoppingCart 
                                     className="top-bar-icon" 
                                     onClick={(e)=>{
@@ -237,10 +270,10 @@ export default function TopBar() {
                                     }}
                                 >
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <Link className="top-bar-shopping-cart-link" to={"shopping_cart" }>{`Meu carrinho (${shoppingCartCount})`}</Link>
+                                        <Link className="top-bar-shopping-cart-link" to={"/shopping_cart" }>{`Meu carrinho (${shoppingCartCount})`}</Link>
                                     </div>
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <Link className="top-bar-shopping-cart-link" to={"shopping_history"}>Histórico de compras</Link>
+                                        <Link className="top-bar-shopping-cart-link" to={"/shopping_history"}>Histórico de compras</Link>
                                     </div>
                                 </Popover>
                             </div>
