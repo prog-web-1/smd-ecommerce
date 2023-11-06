@@ -65,6 +65,7 @@ export class VendaController extends ControllerFactory<
 
   @Post('confirmar/:id')
   @Roles(UserRole.Admin)
+  @HttpCode(200)
   @ApiResponse({ status: 200, type: Venda })
   @ApiResponse({ status: '4XX', type: BaseError })
   aprovar(
