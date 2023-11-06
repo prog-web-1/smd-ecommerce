@@ -1,4 +1,12 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseEnumPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { ControllerFactory } from '../base/base.controller';
 import { CreateVendaDto } from './dto/create-venda.dto';
@@ -13,6 +21,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { CreateCompraDto } from './dto/compra-compra.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { VendaStatus } from './dto/venda-status';
 
 @Controller('venda')
 @ApiTags('venda')
@@ -52,5 +61,16 @@ export class VendaController extends ControllerFactory<
   @IsPublic()
   async validarCarrinho(@Body() createDto: CreateCompraDto) {
     await this.service.validateCartAmounts(createDto);
+  }
+
+  @Post('confirmar/:id')
+  @Roles(UserRole.Admin)
+  @ApiResponse({ status: 200, type: Venda })
+  @ApiResponse({ status: '4XX', type: BaseError })
+  aprovar(
+    @Param('id') id: string,
+    @Body('status', new ParseEnumPipe(VendaStatus)) status: VendaStatus,
+  ) {
+    return this.service.aprovar(+id, status);
   }
 }

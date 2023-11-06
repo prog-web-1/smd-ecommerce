@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -9,6 +10,7 @@ import { User } from '../../user/entities/user.entity';
 import { VendaProduto } from './venda-produto.entity';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { VendaStatus } from '../dto/venda-status';
 
 @Entity({ name: 'venda' })
 export class Venda {
@@ -32,4 +34,11 @@ export class Venda {
   get valorTotal(): number {
     return this.carrinho.reduce((acc, item) => acc + item.valor, 0);
   }
+
+  @Column({
+    type: 'enum',
+    enum: VendaStatus,
+    default: VendaStatus.PENDENTE,
+  })
+  status: VendaStatus;
 }
