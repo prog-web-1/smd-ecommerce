@@ -1,26 +1,35 @@
 import { useParams } from "react-router-dom";
 import PageContainer from "../../components/PageContainer/PageContainer";
-
-import "./Product.css";
 import { LabelButton } from "../../components/LabelButton/LabelButton";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getProductById } from "./requests";
+import { addItemToCart } from "../../tools/shoppingCartFunctions";
+
+import "./Product.css";
 
 const data = {
-    id: "6",
-    name: "Sapato",
-    description: "Um sapato muito bonito",
-    stock: 3,
-    price: 10.20,
-    image: "https://www.louie.com.br/loja/image/cache/data/colecao-2019/viccini/OLIVE/OLIVE%20V%201-550x550.jpg"
+    id: 0,
+    name: "",
+    description: "",
+    stock: 0,
+    price: 0,
+    image: "",
 };
 
 export default function Product() {
     let { id } = useParams();
-    console.log("id", id);
 
     const [product, setProduct] = useState(data);
     const [count, setCount] = useState(1);
+
+    useEffect(()=>{
+        if(id) {
+            getProductById(id).then(product=>{
+                setProduct(product);
+            })
+        }
+    }, [])
 
     return (
         <PageContainer>
@@ -32,6 +41,9 @@ export default function Product() {
                     <div>
                         <div className="product-details-name">{product.name}</div>
                         <div className="product-details-description">{product.description}</div>
+                        <div  className="product-details-stock-container">
+                            {`${product.stock} disponíveis`}
+                        </div>
                         <div className="product-details-price-container">
                             <div className="product-details-price">R$ {product.price.toFixed(2)}</div>
                             <div  className="product-count-container">
@@ -65,7 +77,7 @@ export default function Product() {
                                 label="Compre agora"
                                 extraClass="product-details-buy-button" 
                                 callback={()=>{
-                                    console.log("buy")
+                                    addItemToCart({id: product.id, name: product.name, quantity: count}, product.stock);
                                 }}
                             />
                         </div>

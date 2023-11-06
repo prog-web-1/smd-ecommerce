@@ -83,7 +83,15 @@
     position: relative;
 }
 
-.product-details-price-container::before {
+.product-details-stock-container {
+    padding-top: 10px;
+    justify-content: flex-end;
+    display: flex;
+    position: relative;
+    font-weight: 600;
+}
+
+.product-details-stock-container::before {
     background-color: rgb(192,192,192);
     height: 1px;
     width: 100%;

@@ -6,20 +6,16 @@ import Popover from "@material-ui/core/Popover";
 import { useEffect, useState } from "react";
 import { openLoginModal, openProfileModal } from "../ModalsProvider";
 import { testUrl } from "../../../tools/testUrl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../tools/logout";
+import { openDeleteAccountModal } from "../DeleteAccountModal/DeleteAccountModal";
+import { getCategoriesOptions } from "./requests";
+import { alertError } from "../../Alert/Alert";
 
 import "./TopBar.css";
+import { CartItem, getNumberOfItensInCart, validateShoppingCart } from "../../../tools/shoppingCartFunctions";
 
-const categories = [
-    {label: "Categoria1", value: "1"},
-    {label: "Categoria2", value: "2"},
-    {label: "Categoria3", value: "3"},
-    {label: "Categoria4", value: "4"},
-    {label: "Categoria5", value: "5"},
-    {label: "Categoria6", value: "6"},
-    {label: "Categoria7", value: "7"},
-]
+export let updateShoppingCartCount: (value: number)=>void;
 
 export default function TopBar() {
     const [filterEl, setFilterEl] = useState<HTMLElement | null>(null);
@@ -28,8 +24,42 @@ export default function TopBar() {
     const [userPopoverIsOpen, setUserPopoverIsOpen] = useState(false);
     const [shoppingCartEl, setShoppingCartEl] = useState<HTMLElement | null>(null);
     const [shoppingCartIsOpen, setShoppingCartIsOpen] = useState(false);
-    const [shoppingCartCount, setShoppingCartCount] = useState(10);
+    const [shoppingCartCount, setShoppingCartCount] = useState(0);
     const [userIsAuth, setUserIsAuth] = useState(false);
+    const [categories, setCategories] = useState<{value: string, label: string}[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>();
+    const [textFilter, setTextFilter] = useState("");
+    const navigate = useNavigate();
+
+    updateShoppingCartCount = (value: number)=>{
+        setShoppingCartCount(value);
+    }
+
+    useEffect(()=>{
+        const userToken = localStorage.getItem("token");
+        const userExpireDate = localStorage.getItem("expire_token");
+        
+        if(userToken && userExpireDate && (new Date(JSON.parse(userExpireDate))) < new Date()) {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            localStorage.removeItem("expire_token");
+            window.location.reload();
+        }
+    }, [])
+
+    useEffect(()=>{
+        const localCart = localStorage.getItem("shopping_cart");
+        
+        if(localCart) {
+            const cart = JSON.parse(localCart) as CartItem[];
+            validateShoppingCart(cart, true).then(response=>{
+                const numberOfItens = getNumberOfItensInCart(response.cart);
+                setShoppingCartCount(numberOfItens);
+            })
+        } else {
+            setShoppingCartCount(0);
+        }
+    }, [])
 
     useEffect(()=>{
         const user = localStorage.getItem("user");
@@ -37,6 +67,10 @@ export default function TopBar() {
         if(user) {
             setUserIsAuth(true);
         }
+
+        getCategoriesOptions().then(categories=>{
+            setCategories(categories);
+        })
     }, [])
 
     return (
@@ -87,6 +121,18 @@ export default function TopBar() {
                                 </div>
                                 <div className="top-bar-shopping-cart-link-container">
                                     <div 
+                                        className="top-bar-shopping-cart-link" 
+                                        onClick={()=>{ 
+                                            openDeleteAccountModal();
+                                            setUserEl(null);
+                                            setUserPopoverIsOpen(false);
+                                        }}
+                                    >
+                                        Deletar conta
+                                    </div>
+                                </div>
+                                <div className="top-bar-shopping-cart-link-container">
+                                    <div 
                                     className="top-bar-shopping-cart-link" 
                                         onClick={()=>{ 
                                             logout();
@@ -105,7 +151,26 @@ export default function TopBar() {
                             className="top-bar-form"
                             onSubmit={(e)=>{
                                 e.preventDefault();
-                                window.location.pathname = "search_products";
+                                let queryString = "";
+
+                                if(selectedCategory) {
+                                    queryString = queryString+`category_id=${selectedCategory}`;
+                                }
+
+                                if(textFilter && textFilter.length > 0) {
+                                    if(queryString.length > 0) {
+                                        queryString = queryString+"&";
+                                    }
+                                    queryString = queryString+`product_name=${textFilter}`;
+                                }
+                                if(selectedCategory || (textFilter && textFilter.length > 0)) {
+                                    navigate({ 
+                                        pathname: "/search_products",
+                                        search: `?${queryString}`,
+                                    });
+                                } else {
+                                    alertError("Insira os dados do produto que deseja buscar.");
+                                }
                             }}
                         >
                             <button 
@@ -136,15 +201,23 @@ export default function TopBar() {
                                     vertical: "bottom",
                                 }}
                             >
-                                <div className="top-bar-filter-checkbox-container" onClick={()=>{document.getElementById("all")?.click()}}>
-                                    <input id={"all"} className="top-bar-filter-checkbox" type="checkbox" onChange={(e)=>{/* */}} />
-                                    Todas
-                                </div>
                                 {
                                     categories.map(category=>{
                                         return (
                                             <div className="top-bar-filter-checkbox-container" onClick={()=>{document.getElementById(category.label)?.click()}}>
-                                                <input id={category.label} className="top-bar-filter-checkbox" type="checkbox" onChange={(e)=>{console.log(category.value, e.target.value)}} />
+                                                <input 
+                                                    id={category.label} 
+                                                    checked={category.value === selectedCategory} 
+                                                    className="top-bar-filter-checkbox" 
+                                                    type="checkbox" 
+                                                    onChange={(e)=>{
+                                                        if(e.target.checked) {
+                                                            setSelectedCategory(category.value);
+                                                        } else {
+                                                            setSelectedCategory(undefined);
+                                                        }
+                                                    }} 
+                                                />
                                                 {category.label}
                                             </div>
                                         )
@@ -159,6 +232,9 @@ export default function TopBar() {
                                     size="100"
                                     inputContainerExtraClass="top-bar-search-input-container"
                                     inputExtraClass="top-bar-search-input"
+                                    onChange={(value)=>{
+                                        setTextFilter(value as string);
+                                    }}
                                 />
                                 <button className="top-bar-search-button" type="submit">
                                     <FaSearch/>
@@ -167,7 +243,7 @@ export default function TopBar() {
                         </form>
                         <div className="top-bar-buttons-container">
                             <div className="top-bar-icon-container">
-                                {shoppingCartCount && <div className="top-bar-shopping-cart-count">{shoppingCartCount}</div>}
+                                {shoppingCartCount ? <div className="top-bar-shopping-cart-count">{shoppingCartCount}</div> : ""}
                                 <AiOutlineShoppingCart 
                                     className="top-bar-icon" 
                                     onClick={(e)=>{
@@ -194,10 +270,10 @@ export default function TopBar() {
                                     }}
                                 >
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <Link className="top-bar-shopping-cart-link" to={"shopping_cart" }>{`Meu carrinho (${shoppingCartCount})`}</Link>
+                                        <Link className="top-bar-shopping-cart-link" to={"/shopping_cart" }>{`Meu carrinho (${shoppingCartCount})`}</Link>
                                     </div>
                                     <div className="top-bar-shopping-cart-link-container">
-                                        <Link className="top-bar-shopping-cart-link" to={"shopping_history"}>Histórico de compras</Link>
+                                        <Link className="top-bar-shopping-cart-link" to={"/shopping_history"}>Histórico de compras</Link>
                                     </div>
                                 </Popover>
                             </div>
@@ -241,6 +317,18 @@ export default function TopBar() {
                                             }}
                                         >
                                             Meu perfil
+                                        </div>
+                                    </div>
+                                    <div className="top-bar-shopping-cart-link-container">
+                                        <div 
+                                            className="top-bar-shopping-cart-link" 
+                                            onClick={()=>{ 
+                                                openDeleteAccountModal();
+                                                setUserEl(null);
+                                                setUserPopoverIsOpen(false);
+                                            }}
+                                        >
+                                            Deletar conta
                                         </div>
                                     </div>
                                     <div className="top-bar-shopping-cart-link-container">

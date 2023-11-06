@@ -158,6 +158,7 @@
     color: rgb(37, 153, 199);
     font-size: 13px;
     font-weight: 400;
+    text-decoration: none;
 }
 
 .top-bar-shopping-cart-link:hover {

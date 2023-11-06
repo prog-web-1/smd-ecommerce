@@ -5,6 +5,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 import "./SideBar.css";
 import { Link } from 'react-router-dom';
+import { CgProfile } from 'react-icons/cg';
 
 type SidebarItem = {
     key: string;
@@ -22,6 +23,12 @@ const items: SidebarItem[] = [
         link: "/admin/reports",
         icon: <MdHome/>,
         label: "Relatórios",
+    },
+    {
+        key: "users",
+        link: "/admin/users",
+        icon: <CgProfile/>,
+        label: "Usuários",
     },
     {
         key: "purchases",

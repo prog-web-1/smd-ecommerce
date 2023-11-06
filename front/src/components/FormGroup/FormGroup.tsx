@@ -4,8 +4,9 @@ import Select, { StylesConfig } from 'react-select';
 import { DateInput } from "./DateInput/DateInput";
 
 import "./FormGroup.css";
+import { useEffect } from "react";
 
-export type inputTypes = 'text' | 'number' | 'select' | 'password' | "phone_number" | "multiSelect" | "date";
+export type inputTypes = 'text' | 'number' | 'select' | 'password' | "phone_number" | "multiSelect" | "date" | "image";
 export type inputSizes = '33' | '66' | '50' | '100';
 
 export interface IFormGroupProps {
@@ -51,6 +52,9 @@ function _generateInput(props: IFormGroupProps) {
             break;
         case 'number':
             input = _generateTextInput(props);
+            break;
+        case 'image':
+            input = _generateImageInput(props);
             break;
         case 'select':
             input = _generateSelectInput(props);
@@ -173,13 +177,15 @@ function _generateTextInput(props: IFormGroupProps) {
             className={`form-control-input ${props.errorMessage && "is-invalid-field"} ${props.inputExtraClass ? `${props.inputExtraClass}` : ""}`}
             onChange={(event)=>{
                 if(props.onChange) {
+                    const value = event.target.value;
+
                     if(props.validations) {
-                        const validationError = validateInput(event.target.value, props.validations as string[], props.matchValue);
+                        const validationError = validateInput(value, props.validations as string[], props.matchValue);
                         if(props.setFieldValidation){
                             props.setFieldValidation(props.id, validationError as string)
                         }
                     }
-                    props.onChange(event.target.value);
+                    props.onChange(value);
                 }
             }} 
             defaultValue={props.defaultValue as string} 
@@ -187,6 +193,68 @@ function _generateTextInput(props: IFormGroupProps) {
             disabled={props.disabled}
             placeholder={props.placeholder} 
             type={props.type}
+        />
+    )
+}
+
+function _generateImageInput(props: IFormGroupProps) {
+    function dataURLtoFile(dataurl: string, filename: string) {
+        const arr = dataurl.split(',') as string[];
+        const mime = (arr[0].match(/:(.*?);/) as string[])[1];
+        const bstr = atob(arr[arr.length - 1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
+    }
+
+    useEffect(()=>{
+        if(props.defaultValue && props.id) {
+            const fileExtension = (props.defaultValue as string).split(";base64,")[0].split("/")[1];
+            const file = dataURLtoFile(props.defaultValue as string, `image.${fileExtension}`);
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+    
+            const element = document.getElementById(props.id as string) as HTMLInputElement;
+     
+            if(element) {
+                element.files = dataTransfer.files;
+            }
+        }
+    }, [])
+
+    return (
+        <input 
+            className={`form-control-input ${props.errorMessage && "is-invalid-field"} ${props.inputExtraClass ? `${props.inputExtraClass}` : ""}`}
+            onChange={()=>{
+                if(props.onChange) {
+                    const file = ((document.getElementById(props.id as string) as HTMLInputElement).files as FileList)[0];
+                    const reader = new FileReader();
+
+                    reader.readAsDataURL(file);
+                    reader.onload = function () {
+                        const base64 = reader.result as string;
+                        if(props.validations) {
+                            const validationError = validateInput(base64, props.validations as string[], props.matchValue);
+                            if(props.setFieldValidation){
+                                props.setFieldValidation(props.id, validationError as string)
+                            }
+                        }
+                        props.onChange && props.onChange(base64);
+                    };
+                    reader.onerror = function (error) {
+                        console.log('Error: ', error);
+                    };
+                }
+            }}
+            id={props.id} 
+            disabled={props.disabled}
+            placeholder={props.placeholder} 
+            type={props.type === "image" ? "file" :  props.type}
+            accept=".png,.jpg"
         />
     )
 }

@@ -4,8 +4,8 @@ import { DeleteModal } from "../../../components/DeleteModal/DeleteModal";
 import { SaveModal } from "../../../components/SaveModal/SaveModal"
 import { validateAllInputs } from "../../../tools/validateInputs";
 import { fieldValidations, getSaveModalFields } from "./getSaveModalFields";
-import { updateEntities } from "../AdminCategories";
-import { createCategory, deleteCategory, editCategory } from "./requests";
+import { updateEntities } from "../AdminUsers";
+import { createUser, deleteUser, editUser } from "./requests";
 
 export let openSaveModal:(targetEntity?: Record<string, unknown>)=>void;
 export let openDeleteModal:(targetEntity: Record<string, unknown>)=>void;
@@ -24,7 +24,12 @@ export function ModalsProvider() {
                 setIsEdit(true);
             } 
             setTargetEntity({...targetEntity}); 
-            setEntity({nome: targetEntity.nome});
+            setEntity({
+                nome: targetEntity.nome,
+                login: targetEntity.login,
+                email: targetEntity.email,
+                endereco: targetEntity.endereco,
+            });
         } else {
             setIsEdit(false);
         }
@@ -41,7 +46,7 @@ export function ModalsProvider() {
             {
                 isOpenSaveModal && 
                     <SaveModal
-                        titleLabel={isEdit ? "Editar categoria" : "Nova categoria"}
+                        titleLabel={isEdit ? "Editar usuário" : "Nova usuário"}
                         showModal={isOpenSaveModal}
                         closeModal={()=>{setIsOpenSaveModal(false); setTargetEntity({}); setErrorMessages({});}}
                         targetEntity={targetEntity}
@@ -75,12 +80,22 @@ export function ModalsProvider() {
                                 label: "Salvar",
                                 callback: async ()=>{
                                     const validations = {...fieldValidations};
-                                    const validationResult = validateAllInputs({entity, validations});
+                                    const newEntity = {...entity} as Record<string, unknown>;
+
+                                    if(isEdit) {
+                                        if(!newEntity.senha || !((newEntity.senha as string).length > 0)) {
+                                            validations.senha = [];
+                                            delete newEntity.senha;
+                                        }
+                                    }
+
+                                    const validationResult = validateAllInputs({entity: newEntity, validations});
+
                                     if(validationResult.success) {
                                         if(isEdit) {
-                                            const success = await editCategory({entity, id: targetEntity.id as string});
+                                            const success = await editUser({entity: newEntity, id: targetEntity.id as string});
                                             if(success) {
-                                                alertSuccess("Categoria editada com sucesso.");
+                                                alertSuccess("Usuário editado com sucesso.");
                                                 setEntity({});
                                                 setTargetEntity({});
                                                 setIsOpenSaveModal(false); 
@@ -88,9 +103,9 @@ export function ModalsProvider() {
                                                 updateEntities();
                                             }
                                         } else {
-                                            const success = await createCategory({entity});
+                                            const success = await createUser({entity: newEntity});
                                             if(success) {
-                                                alertSuccess("Categoria criada com sucesso.");
+                                                alertSuccess("Usuário criado com sucesso.");
                                                 setEntity({});
                                                 setTargetEntity({});
                                                 setIsOpenSaveModal(false); 
@@ -110,19 +125,19 @@ export function ModalsProvider() {
             {
                 isOpenDeleteModal && 
                     <DeleteModal
-                        titleLabel={"Remover categoria"}
+                        titleLabel={"Remover usuário"}
                         showModal={isOpenDeleteModal}
                         closeModal={()=>{setIsOpenDeleteModal(false)}}
                         callback={async ()=>{
-                            const success = await deleteCategory(targetEntity.id as string);
+                            const success = await deleteUser(targetEntity.id as string);
                             if(success) {
-                                alertSuccess("Categoria removida com sucesso.")
+                                alertSuccess("Usuário removido com sucesso.")
                                 setIsOpenDeleteModal(false);
                                 setTargetEntity({});
                                 updateEntities();
                             }
                         }}
-                        bodyLabel={"Essa ação irá remover a categoria."}
+                        bodyLabel={"Essa ação irá remover o usuário."}
                     />
             }
         </div>

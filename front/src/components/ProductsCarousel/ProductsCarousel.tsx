@@ -4,8 +4,8 @@ import { ProductCard } from './ProductCard/ProductCard';
 
 import "./ProductsCarousel.css";
 
-interface ProductStock {
-    id: string,
+export interface ProductStock {
+    id: number,
     name: string,
     description: string,
     stock: number,
@@ -63,4 +63,4 @@ function dividirArrayEmGrupos(array: ProductStock[], tamanhoGrupo: number) {
     }
 
     return grupos;
-  }
+}

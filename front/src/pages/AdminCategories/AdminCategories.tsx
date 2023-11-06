@@ -2,38 +2,39 @@ import { useEffect, useState } from "react";
 import { ListPage } from "../../components/ListPage/ListPage";
 import { getColumns } from "./getColumns";
 import { ModalsProvider, openSaveModal } from "./ModalsProvider/ModalsProvider";
+import { getCategories } from "./requests";
 
 export let updateEntities: ()=>void;
 
 export default function AdminCategories() {
-    const [entities, setEntities] = useState<Record<string, unknown>[]>([{id: "1", name: "Categoria 1"}]);
+    const [entities, setEntities] = useState<Record<string, unknown>[]>([]);
     const [total, setTotal] = useState(1);
     const [offset, setOffset] = useState(0);
     const [filters, setFilters] = useState<Record<string, unknown>>({
-        sort: "name",
-        order: "asc",
+        order: "nome",
+        sort: "ASC",
         limit: 10,
     });
     
     updateEntities = ()=>{
-        /*getEntities(offset, filters).then(result=>{
+        getCategories({offset, filters}).then(result=>{
             setEntities(result.data)
-            setTotal(result.total*10)
-        })*/
+            setTotal(result.total)
+        })
     }
 
     useEffect(()=>{
-        /*getEntities(offset, filters).then(result=>{
+        getCategories({offset, filters}).then(result=>{
             setEntities(result.data)
-            setTotal(result.total*10)
-        })*/
+            setTotal(result.total)
+        })
     }, [offset, filters])
 
     return (
         <div>
             <ModalsProvider/>
             <ListPage
-                title={"Categoria"}
+                title={"Categorias"}
                 titleButtonLabel={"Nova Categoria"}
                 titleButtonCallback={()=>{openSaveModal()}}
                 entities={entities}
@@ -41,13 +42,13 @@ export default function AdminCategories() {
                 filters={[
                     {
                         placeholder: "Filtrar por nome",
-                        control: "name",
+                        control: "nome",
                         type: "text",
                     },
                 ]}
                 defaultFilter={{
-                    sort: "name",
-                    order: "asc",
+                    order: "nome",
+                    sort: "ASC",
                     limit: 10,
                 }}
                 filtersSearchCallBack={(filters: Record<string, unknown>)=>{

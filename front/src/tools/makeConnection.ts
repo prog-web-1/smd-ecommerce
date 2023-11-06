@@ -1,6 +1,11 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { alertError } from "../components/Alert/Alert";
 import { closeLoader, openLoader } from "../components/Loader/Loader";
+
+interface IResponse {
+    success: boolean;
+    data?: Record<string, unknown> | Record<string, unknown>[];
+}
 
 interface IMakeConnectionProps {
     method: "get" | "post" | "put" | "delete" | "patch",
@@ -8,6 +13,7 @@ interface IMakeConnectionProps {
     entityId?: string,
     body?: Record<string, unknown>,
     otherQueryStrings?: Record<string, unknown>,
+    silent?: boolean,
 }
 
 export async function makeConnection(props: IMakeConnectionProps) {
@@ -17,12 +23,18 @@ export async function makeConnection(props: IMakeConnectionProps) {
     });
     const url = buildUrl(props.suffix, props.entityId, props.otherQueryStrings);
     const body = props.body ? props.body : {};
-    let response; 
+    let response: IResponse; 
 
-    openLoader();
+    if(!props.silent) {
+        openLoader();
+    }
 
     try {
-        response = await connectToServer(api, url, props.method, body);
+        const serverResponse = await connectToServer(api, url, props.method, body)
+        response = {
+            success: true,
+            data: (serverResponse as AxiosResponse).data,
+        }
     } catch(err) {
         const error = (err as {response: {data: Record<string, unknown>}}).response.data as {
             error: string;
@@ -34,15 +46,24 @@ export async function makeConnection(props: IMakeConnectionProps) {
             error.message = error.message[0];
         }
         
-        if(error.statusCode === 401 && !error.message){
-            localStorage.clear();
+        if(error.statusCode === 401 && error.message === "Unauthorized"){
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            localStorage.removeItem("expire_token");
             window.location.reload();
         } else {
             alertError(error.message);
-        }    
+        }
+        
+        response = {
+            success: false,
+            data: error,
+        }
     }
 
-    closeLoader();
+    if(!props.silent) {
+        closeLoader();
+    }
 
     return response;
 }

@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { makeConnection } from "../../../tools/makeConnection";
 
 interface IRegisterRequestProps {
@@ -23,9 +22,9 @@ export async function registerRequest(props: IRegisterRequestProps) {
     let data = {} as Record<string, unknown>;
 
     try {
-        const response = await makeConnection({method, suffix, body}) as AxiosResponse<any, any>;
-        data = response.data;
-        success = true;
+        const response = await makeConnection({method, suffix, body});
+        data = response.data as Record<string, unknown>;
+        success = response.success;
     } catch (err) {
         console.error(err);
     }
