@@ -31,6 +31,7 @@ export class ProductService extends BaseService<
     if (filter.nome) where.nome = ILike(`%${filter.nome}%`);
     if (filter.emEstoque !== undefined)
       where.quantidade = filter.emEstoque ? MoreThan(0) : LessThan(1);
+    if (filter.category) where.category = { id: filter.category };
     return super.findAll(filter, {
       where,
     });

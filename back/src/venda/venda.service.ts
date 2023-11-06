@@ -8,6 +8,7 @@ import { CreateVendaDto } from './dto/create-venda.dto';
 import { VendaFilter } from './dto/find-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
 import { Venda } from './entities/venda.entity';
+import { VendaStatus } from './dto/venda-status';
 
 @Injectable()
 export class VendaService extends BaseService<
@@ -26,6 +27,7 @@ export class VendaService extends BaseService<
   findAll(filter: VendaFilter) {
     const where = {} as FindOptionsWhere<Venda>;
     if (filter.cliente) where.user = { nome: ILike(`%${filter.cliente}%`) };
+    if (filter.status) where.status = filter.status;
     return super.findAll(filter, {
       where,
     });
@@ -44,7 +46,7 @@ export class VendaService extends BaseService<
     for (const product of products) {
       const productInDb = await this.productService.findOne(product.produto.id);
       if (productInDb.quantidade - product.quantidade < 0) {
-        insufficient.push(productInDb.nome);
+        insufficient.push(`${productInDb.nome}:${productInDb.quantidade}`);
       }
     }
     if (insufficient.length > 0) {
@@ -63,5 +65,11 @@ export class VendaService extends BaseService<
       productInDb.quantidade -= product.quantidade;
       await this.productService.update(productInDb.id, productInDb);
     }
+  }
+
+  async aprovar(id: number, status: VendaStatus) {
+    return this.update(id, {
+      status,
+    } as UpdateVendaDto);
   }
 }

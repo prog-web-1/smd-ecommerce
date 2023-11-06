@@ -21,12 +21,14 @@ export class VendaProduto {
 
   @ManyToOne(() => Venda, (venda) => venda.carrinho, {
     nullable: false,
+    onDelete: 'CASCADE',
   })
   venda: Venda;
 
   @ManyToOne(() => Product, (produto) => produto.vendas, {
     eager: true,
     nullable: false,
+    onDelete: 'CASCADE',
   })
   produto: Product;
 

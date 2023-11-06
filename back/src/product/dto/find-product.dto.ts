@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { BaseFilter, BaseFilterResponse } from '../../base/base.filter';
 import { Product } from '../entities/product.entity';
 
@@ -19,4 +19,10 @@ export class ProductFilter extends BaseFilter {
   @Transform(({ value }) => value === 'true')
   @ApiProperty({ required: false, type: Boolean })
   public emEstoque: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => parseInt(value))
+  public category: number;
 }
