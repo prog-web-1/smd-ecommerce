@@ -227,7 +227,7 @@ export function ListPage(props: IListPageProps) {
                                                         minWidth: `${(100/(props.columns.length-1))}%`,
                                                     }}
                                                 >
-                                                    {entity[column.control] ? entity[column.control] as string : "---" }
+                                                    {entity[column.control] || entity[column.control] === 0 ? entity[column.control] as string : "---" }
                                                 </td>
                                             )
                                         } else if(column.type === "icon") {

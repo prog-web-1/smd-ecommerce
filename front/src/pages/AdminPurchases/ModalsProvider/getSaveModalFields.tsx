@@ -2,75 +2,59 @@ import { IFormGroupProps } from "../../../components/FormGroup/FormGroup";
 
 interface IGetSaveModalFieldsProps {
     initialEntity: Record<string, unknown>;
-    errorMessages: Record<string, string>;
-    onChange: (field: string, value: string | Date | string[])=>void;
-    setFieldValidation: (field: string, value: string)=>void;
-}
-
-export const fieldValidations = {
-    name: ["mandatory"],
-    description: ["mandatory"],
-    price: ["mandatory"],
-    stock: ["mandatory"],
 }
 
 export function getSaveModalFields(props: IGetSaveModalFieldsProps) {
     const fields: IFormGroupProps[] = [
         {
-            id: "name",
-            label: "Nome",
+            id: "client",
+            label: "Cliente",
             type: "text",
-            defaultValue: props.initialEntity && props.initialEntity.name ? props.initialEntity.name as string : "",
-            errorMessage: props.errorMessages && props.errorMessages.name ? props.errorMessages.name : "",
-            validations: fieldValidations.name && fieldValidations.name,
+            defaultValue: props.initialEntity && props.initialEntity.client ? props.initialEntity.client as string : "",
             placeholder: "",
             size: "100",
-            setFieldValidation: props.setFieldValidation,
-            onChange: (value: string | Date | string[])=>{
-                props.onChange("name", value);
-            }
+            disabled: true,
+            onChange: (value: string | Date | string[])=>{/* */}
         },
         {
-            id: "description",
-            label: "Descrição",
+            id: "date",
+            label: "Data",
             type: "text",
-            defaultValue: props.initialEntity && props.initialEntity.description ? props.initialEntity.description as string : "",
-            errorMessage: props.errorMessages && props.errorMessages.description ? props.errorMessages.description : "",
-            validations: fieldValidations.description && fieldValidations.description,
+            defaultValue: props.initialEntity && props.initialEntity.date ? props.initialEntity.date as string : "",
             placeholder: "",
             size: "100",
-            setFieldValidation: props.setFieldValidation,
-            onChange: (value: string | Date | string[])=>{
-                props.onChange("description", value);
-            }
+            disabled: true,
+            onChange: (value: string | Date | string[])=>{/* */}
         },
         {
-            id: "price",
-            label: "Preço",
-            type: "number",
-            defaultValue: props.initialEntity && props.initialEntity.price ? props.initialEntity.price as string : "",
-            errorMessage: props.errorMessages && props.errorMessages.price ? props.errorMessages.price : "",
-            validations: fieldValidations.price && fieldValidations.price,
+            id: "value",
+            label: "Valor",
+            type: "text",
+            defaultValue: props.initialEntity && props.initialEntity.value ? props.initialEntity.value as string : "",
             placeholder: "",
             size: "100",
-            setFieldValidation: props.setFieldValidation,
-            onChange: (value: string | Date | string[])=>{
-                props.onChange("price", value);
-            }
+            disabled: true,
+            onChange: (value: string | Date | string[])=>{/* */}
         },
         {
-            id: "stock",
-            label: "Estoque",
-            type: "number",
-            defaultValue: props.initialEntity && props.initialEntity.stock ? props.initialEntity.stock as string : "",
-            errorMessage: props.errorMessages && props.errorMessages.stock ? props.errorMessages.stock : "",
-            validations: fieldValidations.stock && fieldValidations.stock,
+            id: "status",
+            label: "Status",
+            type: "text",
+            defaultValue: props.initialEntity && props.initialEntity.status ? props.initialEntity.status as string : "",
             placeholder: "",
             size: "100",
-            setFieldValidation: props.setFieldValidation,
-            onChange: (value: string | Date | string[])=>{
-                props.onChange("stock", value);
-            },
+            disabled: true,
+            onChange: (value: string | Date | string[])=>{/* */}
+        },
+        {
+            id: "products",
+            label: "Produtos",
+            type: "text",
+            defaultValue: props.initialEntity && props.initialEntity.products ? props.initialEntity.products as string : "",
+            placeholder: "",
+            size: "100",
+            disabled: true,
+            onChange: (value: string | Date | string[])=>{/* */}
         },
     ]
 

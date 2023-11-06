@@ -20,19 +20,19 @@ export default function SearchProducts() {
         }
 
         if(categoryId) {
-            filters.categoria = categoryId;
+            filters.category = categoryId;
         }
 
         getFilteredProducts({filters}).then(products=>{
             setProducts(products);
         });
-    }, [])
+    }, [searchParams])
 
     return (
         <PageContainer>
             <div className="search_product_page">
                 { products.length > 0 ? 
-                    <div>
+                    <div className="search_product_page">
                         {products.map(product=>{
                             return (
                                 <ProductCard

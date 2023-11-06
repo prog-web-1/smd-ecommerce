@@ -204,7 +204,16 @@ export default function TopBar() {
                                 {
                                     categories.map(category=>{
                                         return (
-                                            <div className="top-bar-filter-checkbox-container" onClick={()=>{document.getElementById(category.label)?.click()}}>
+                                            <div 
+                                                className="top-bar-filter-checkbox-container" 
+                                                onClick={()=>{
+                                                    if(!(document.getElementById(category.label) as HTMLInputElement).checked) {
+                                                        setSelectedCategory(category.value);
+                                                    } else {
+                                                        setSelectedCategory(undefined);
+                                                    }
+                                                }}
+                                            >
                                                 <input 
                                                     id={category.label} 
                                                     checked={category.value === selectedCategory} 

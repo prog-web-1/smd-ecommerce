@@ -50,7 +50,7 @@ export async function makeConnection(props: IMakeConnectionProps) {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
             localStorage.removeItem("expire_token");
-            window.location.reload();
+            window.location.pathname = "home";
         } else {
             alertError(error.message);
         }
@@ -98,7 +98,7 @@ function buildUrl(
                         url = url+"&"
                     }
                 })
-            } else {
+            } else if(otherQueryStrings[key] && (otherQueryStrings[key] as string).toString().length > 0) {
                 url = `${url}${key}=${otherQueryStrings[key]}`
             }
             if(index+1 <= Object.keys(otherQueryStrings).length-1) {

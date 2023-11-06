@@ -121,6 +121,7 @@
 
 .top-bar-filter-checkbox {
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .top-bar-filter-popover {

@@ -1,12 +1,12 @@
 import { IColumn } from "../../components/ListPage/ListPage";
-import { openDeleteModal } from "./ModalsProvider/ModalsProvider";
+import { openDeleteModal, openDetailsModal } from "./ModalsProvider/ModalsProvider";
 
 export function getColumns() {
     const userActions = [
         {
             label: "Detalhes",
             callback: (entity: Record<string, unknown>)=>{
-                //openSaveModal(entity)
+                openDetailsModal(entity)
             }
         },
         {
@@ -22,13 +22,13 @@ export function getColumns() {
             type: "string",
             label: "Cliente",
             control: "client",
-            orderControl: "client",
+            orderControl: "user",
         },
         {
             type: "string",
             label: "Valor",
             control: "value",
-            orderControl: "value",
+            orderControl: "valorTotal",
         },
         {
             type: "string",
@@ -40,7 +40,7 @@ export function getColumns() {
             type: "string",
             label: "Data",
             control: "date",
-            orderControl: "date",
+            orderControl: "data_hora",
         },
         {
             type: "action",

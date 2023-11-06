@@ -2,5 +2,5 @@ export function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("expire_token");
-    window.location.reload();
+    window.location.pathname = "home";
 }
