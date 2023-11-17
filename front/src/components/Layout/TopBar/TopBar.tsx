@@ -41,6 +41,7 @@ export default function TopBar() {
         
         if(userToken && userExpireDate && (new Date(JSON.parse(userExpireDate))) < new Date()) {
             localStorage.removeItem("user");
+            localStorage.removeItem("admin");
             localStorage.removeItem("token");
             localStorage.removeItem("expire_token");
             window.location.reload();

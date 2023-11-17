@@ -87,6 +87,7 @@ export default function ShoppingHistory() {
         if(!userToken || !userExpireDate || (userToken && userExpireDate && (new Date(JSON.parse(userExpireDate))) < new Date())) {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
+            localStorage.removeItem("admin");
             localStorage.removeItem("expire_token");
             alertError("Faça login para visualizar seu histórico de compras.");
             openLoginModal();

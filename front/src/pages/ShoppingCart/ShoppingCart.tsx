@@ -145,6 +145,7 @@ export default function ShoppingCart() {
 
                                 if(!userToken || !userExpireDate || (userToken && userExpireDate && (new Date(JSON.parse(userExpireDate))) < new Date())) {
                                     localStorage.removeItem("user");
+                                    localStorage.removeItem("admin");
                                     localStorage.removeItem("token");
                                     localStorage.removeItem("expire_token");
                                     alertError("Faça login para finalizar a compra.");
