@@ -40,7 +40,7 @@ export default function AdminPurchases() {
                 filters={[
                     {
                         placeholder: "Filtrar por cliente",
-                        control: "client",
+                        control: "cliente",
                         type: "text",
                     },
                     {
