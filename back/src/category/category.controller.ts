@@ -70,9 +70,11 @@ export class CategoryController extends ControllerFactory<
           const product = new Product();
           product.nome = faker.commerce.productName();
           product.preco = parseFloat(faker.commerce.price({ dec: 2 }));
-          product.quantidade = faker.datatype.number();
+          product.quantidade = faker.number.int({ min: 0, max: 10 });
           product.descricao = faker.commerce.productDescription();
-          product.foto = faker.image.url();
+          product.foto = faker.image.urlLoremFlickr({
+            category: 'product',
+          });
           product.category = saved;
           try {
             await this.productService.create(product);
