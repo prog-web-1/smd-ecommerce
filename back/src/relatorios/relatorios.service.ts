@@ -47,7 +47,7 @@ export class RelatoriosService {
     return await this.vendaRepository
       .createQueryBuilder('venda')
       .select(selectCommand, 'data')
-      .addSelect('SUM(venda.valor_total)', 'total')
+      .addSelect('SUM(venda.valorTotal)', 'total')
       .where('venda.data_hora BETWEEN :dataInicial AND :dataFinal', {
         dataInicial,
         dataFinal,

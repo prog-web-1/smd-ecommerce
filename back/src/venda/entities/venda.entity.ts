@@ -40,5 +40,5 @@ export class Venda {
     scale: 2,
     transformer: new ColumnNumericTransformer(),
   })
-  valor_total: number;
+  valorTotal: number;
 }

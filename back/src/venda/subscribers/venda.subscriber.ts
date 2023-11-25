@@ -21,14 +21,14 @@ export class VendaSubscriber implements EntitySubscriberInterface<Venda> {
   }
 
   async beforeInsert(event: InsertEvent<Venda>) {
-    event.entity.valor_total = 0;
+    event.entity.valorTotal = 0;
     await Promise.all(
       event.entity.carrinho.map(async (item) => {
         const produto = await event.manager.findOne(Product, {
           where: { id: item.produto.id },
         });
         item.valor = produto.preco * item.quantidade;
-        event.entity.valor_total += item.valor;
+        event.entity.valorTotal += item.valor;
       }),
     );
   }
