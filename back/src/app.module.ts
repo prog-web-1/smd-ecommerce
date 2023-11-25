@@ -9,6 +9,7 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { VendaModule } from './venda/venda.module';
 import { RolesGuard } from './auth/guards/role-auth.guard';
+import { RelatoriosModule } from './relatorios/relatorios.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RolesGuard } from './auth/guards/role-auth.guard';
     CategoryModule,
     ProductModule,
     VendaModule,
+    RelatoriosModule,
   ],
   providers: [
     {
