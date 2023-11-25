@@ -3,6 +3,7 @@ import { Product } from '../../product/entities/product.entity';
 import { Venda } from './venda.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { ColumnNumericTransformer } from '../../utils/columnFloatTransformer';
 
 @Entity({ name: 'venda_produto' })
 export class VendaProduto {
@@ -32,6 +33,10 @@ export class VendaProduto {
   })
   produto: Product;
 
-  @Column()
+  @Column('decimal', {
+    precision: 6,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   valor: number;
 }

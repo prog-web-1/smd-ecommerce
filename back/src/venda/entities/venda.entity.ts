@@ -9,6 +9,7 @@ import {
 import { User } from '../../user/entities/user.entity';
 import { VendaProduto } from './venda-produto.entity';
 import { VendaStatus } from '../dto/venda-status';
+import { ColumnNumericTransformer } from '../../utils/columnFloatTransformer';
 
 @Entity({ name: 'venda' })
 export class Venda {
@@ -34,6 +35,10 @@ export class Venda {
   })
   status: VendaStatus;
 
-  @Column()
+  @Column('decimal', {
+    precision: 6,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   valor_total: number;
 }
