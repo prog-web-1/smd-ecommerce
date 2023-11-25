@@ -4,6 +4,16 @@ import { RelatoriosService } from './relatorios.service';
 import { Roles } from '../auth/decorators/role.decorator';
 import { UserRole } from '../auth/models/UserRole';
 
+function inicioMes() {
+  const hoje = new Date();
+  return new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+}
+
+function fimMes() {
+  const hoje = new Date();
+  return new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+}
+
 @Controller('relatorios')
 @ApiTags('relatorios')
 export class RelatoriosController {
@@ -22,8 +32,20 @@ export class RelatoriosController {
     @Query('dataFinal') dataFinal: string,
   ) {
     return await this.service.topUsuarioVendas(
-      new Date(dataInicial),
-      new Date(dataFinal),
+      dataInicial ? new Date(dataInicial) : inicioMes(),
+      dataFinal ? new Date(dataFinal) : fimMes(),
+    );
+  }
+
+  @Get('/total-recebido-dia')
+  @Roles(UserRole.Admin)
+  async totalRecebidoDia(
+    @Query('dataInicial') dataInicial: string,
+    @Query('dataFinal') dataFinal: string,
+  ) {
+    return await this.service.totalRecebidoDia(
+      dataInicial ? new Date(dataInicial) : inicioMes(),
+      dataFinal ? new Date(dataFinal) : fimMes(),
     );
   }
 }

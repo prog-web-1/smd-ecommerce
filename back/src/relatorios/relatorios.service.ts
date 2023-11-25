@@ -23,19 +23,6 @@ export class RelatoriosService {
   }
 
   async topUsuarioVendas(dataInicial: Date, dataFinal: Date) {
-    if (isNaN(dataInicial?.getTime()))
-      dataInicial = new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        1,
-      );
-    if (isNaN(dataFinal?.getTime()))
-      dataFinal = new Date(
-        new Date().getFullYear(),
-        new Date().getMonth() + 1,
-        0,
-      );
-    console.log(dataInicial, dataFinal);
     return await this.vendaRepository
       .createQueryBuilder('venda')
       .select('user.id', 'id')
@@ -46,8 +33,28 @@ export class RelatoriosService {
         dataInicial,
         dataFinal,
       })
+      .where('venda.status = :status', { status: 'confirmado' })
       .groupBy('user.id')
       .orderBy('compras', 'DESC')
+      .getRawMany();
+  }
+
+  async totalRecebidoDia(dataInicial: Date, dataFinal: Date) {
+    const selectCommand =
+      process.env.DATABASE_TYPE === 'postgres'
+        ? "to_char(venda.data_hora, 'dd/MM/yyyy')"
+        : "DATE_FORMAT(venda.data_hora, '%d/%m/%Y')";
+    return await this.vendaRepository
+      .createQueryBuilder('venda')
+      .select(selectCommand, 'data')
+      .addSelect('SUM(venda.valor_total)', 'total')
+      .where('venda.data_hora BETWEEN :dataInicial AND :dataFinal', {
+        dataInicial,
+        dataFinal,
+      })
+      .where('venda.status = :status', { status: 'confirmado' })
+      .groupBy('data')
+      .orderBy('data', 'ASC')
       .getRawMany();
   }
 }
