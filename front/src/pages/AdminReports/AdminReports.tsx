@@ -44,7 +44,7 @@ export default function AdminReports() {
                         openLoader();
                         const container = document.getElementById("admin-dashboard-page") as HTMLElement;
                         container.id = "admin-dashboard-page-export";
-                        container.style.width ="1800px";
+                        container.style.width ="2000px";
                         container.style.backgroundColor ="white";
                         setIsPrinting(true);
 
