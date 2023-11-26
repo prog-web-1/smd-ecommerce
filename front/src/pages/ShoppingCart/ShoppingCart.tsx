@@ -58,12 +58,13 @@ export default function ShoppingCart() {
                 {products.map((product, index)=>{
                     return (
                         <div className="shopping-cart-product-box">
+                            <div className="shopping-cart-product-title">{product.name}</div>
+                            <div className="shopping-cart-product-sub-box">
                             <div className="shopping-cart-section">
                                 <div>
-                                    <div className="shopping-cart-product-title">{product.name}</div>
                                     <img src={product.image} alt={`Foto de ${product.name}`} className="shopping-cart-product-image"/>
                                 </div>
-                                <div>
+                                <div style={{padding: "20px"}}>
                                     <div className="shopping-cart-column-name">Descrição</div>
                                     <div>{product.description}</div>
                                 </div>
@@ -129,6 +130,7 @@ export default function ShoppingCart() {
                                         }}
                                     />
                                 </div>
+                            </div>
                             </div>
                         </div>
                     )

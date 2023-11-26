@@ -28,6 +28,10 @@ export interface IFormGroupProps {
     }[];
     inputExtraClass?: string;
     inputContainerExtraClass?: string;
+    dateFormat?: string;
+    minDate?: string;
+    maxDate?: string;
+    monthPicker?: boolean;
 }
 
 function FormGroup(props: IFormGroupProps) {
@@ -167,6 +171,10 @@ function _generateDateInput(props: IFormGroupProps) {
             validations={props.validations}
             setFieldValidation={props.setFieldValidation}
             errorMessage={props.errorMessage}
+            dateFormat={props.dateFormat}
+            monthPicker={props.monthPicker}
+            minDate={props.minDate}
+            maxDate={props.maxDate}
         />
     )
 }

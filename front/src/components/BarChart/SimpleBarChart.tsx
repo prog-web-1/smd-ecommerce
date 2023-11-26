@@ -12,6 +12,7 @@ interface ISimpleBarChartProps {
     bars: IBar[];
     values: Record<string, unknown>[];
     dataKey: string;
+    isPrinting?: boolean;
 }
 
 export function SimpleBarChart(props: ISimpleBarChartProps) {
@@ -37,10 +38,15 @@ export function SimpleBarChart(props: ISimpleBarChartProps) {
         })
     }, [])
 
+    useEffect(()=>{
+        const width = document.getElementById(props.id)?.clientWidth as number;
+        setWidth(width);
+    }, [props.isPrinting])
+
     return (
         <div id={props.id} style={{width: "100%", overflowX: "auto", overflowY: "hidden"}}>
             <BarChart
-                width={values.length*80 > width ? values.length*80 : width}
+                width={values.length*80 > width && !props.isPrinting ? values.length*80 : width}
                 height={300}
                 data={values}
                 margin={{
@@ -58,7 +64,7 @@ export function SimpleBarChart(props: ISimpleBarChartProps) {
                 {
                     bars.map(bar=>{
                         return (
-                            <Bar dataKey={bar.name} fill={bar.color}  barSize={40} >
+                            <Bar dataKey={bar.name} fill={bar.color}  barSize={props.isPrinting ? width/bars.length : 40} >
                                 <LabelList
                                     dataKey={bar.name}
                                     position={"top"}
