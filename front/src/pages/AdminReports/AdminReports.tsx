@@ -200,8 +200,8 @@ export default function AdminReports() {
                             inputContainerExtraClass={"dashboard-header-inline-input"}
                             defaultValue={moment(new Date()).startOf("month").format("YYYY-MM-DD")}
                             onChange={(v)=>{
-                                const startDate = moment(v, 'MMMM/yyyy').startOf("month").format("YYYY-MM-DD")+" 00:00:00";
-                                const endDate = moment(v, 'MMMM/yyyy').endOf("month").format("YYYY-MM-DD")+" 23:59:59";
+                                const startDate = moment(v).startOf("month").format("YYYY-MM-DD")+" 00:00:00";
+                                const endDate = moment(v).endOf("month").format("YYYY-MM-DD")+" 23:59:59";
 
                                 getBillingDiary(startDate, endDate).then(data=>{setBillingDiary(data)})
                             }}
