@@ -1,8 +1,8 @@
 import {
   IsNotEmptyObject,
   IsNumber,
-  IsPositive,
   IsString,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Category } from '../../category/entities/category.entity';
@@ -19,7 +19,7 @@ export class CreateProductDto {
   @IsString()
   foto: string;
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   quantidade: number;
   @ValidateNested()
   @Type(() => CreateProductCategoryDto)
