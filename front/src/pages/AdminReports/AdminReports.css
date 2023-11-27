@@ -46,3 +46,53 @@
     border: 1px solid #6A5ACD;
     width: 100%;
 }
+
+.admin-reports-box-header-filters {
+    display: flex;
+}
+
+.dashboard-header-inline-input {
+    padding: 0px 10px 0px 0px;
+    margin-bottom: 10px;
+}
+
+.dashboard-header-inputs-box {
+    display: flex;
+    flex-grow: 1;
+}
+
+.dashboard-header-search-button {
+    display: flex;
+    padding: 10px;
+    font-size: 17px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #6A5ACD;
+    color: white;
+    border-radius: 10px;
+    height: fit-content;
+    align-self: end;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#admin-dashboard-page-export .admin-reports-chart-area {
+    display: block;
+}
+
+#admin-dashboard-page-export .admin-reports-data-box {
+    width: 100%;
+    margin-bottom: 20px;
+    height: fit-content;
+}
+
+.admin-reports-data-page-title {
+    color: #6A5ACD;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+#admin-dashboard-page-export .admin-reports-client-card {
+    border: 1px solid #6A5ACD;
+}
