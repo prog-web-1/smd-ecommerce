@@ -33,7 +33,7 @@ export class RelatoriosService {
         dataInicial,
         dataFinal,
       })
-      .where('venda.status = :status', { status: 'confirmado' })
+      .andWhere('venda.status = :status', { status: 'confirmado' })
       .groupBy('user.id')
       .orderBy('compras', 'DESC')
       .getRawMany();
@@ -52,7 +52,7 @@ export class RelatoriosService {
         dataInicial,
         dataFinal,
       })
-      .where('venda.status = :status', { status: 'confirmado' })
+      .andWhere('venda.status = :status', { status: 'confirmado' })
       .groupBy('data')
       .orderBy('data', 'ASC')
       .getRawMany();
